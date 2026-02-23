@@ -7,12 +7,13 @@ import PostPage from "../pages/PostPage";
 
 export const router = createBrowserRouter([
   {
+    path: "/",
     element: <AppShell />,
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/feed", element: <FeedPage /> },
-      { path: "/new", element: <CreatePostPage /> },
-      { path: "/post/:id", element: <PostPage /> },
+      { index: true, element: <HomePage /> },
+      { path: "feed", element: <FeedPage /> },
+      { path: "new", element: <CreatePostPage /> },
+      { path: "post/:id", element: <PostPage /> },
     ],
   },
 ]);
