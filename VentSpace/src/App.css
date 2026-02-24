@@ -40,3 +40,50 @@
 .read-the-docs {
   color: #888;
 }
+
+.home-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr 260px;
+  gap: 20px;
+  padding: 20px;
+}
+
+.left-sidebar,
+.right-sidebar {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  height: fit-content;
+}
+
+.main-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sort-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.sort-tabs button,
+.left-sidebar button {
+  background: #f3f2ff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.sort-tabs button:hover,
+.left-sidebar button:hover {
+  background: #e0dcff;
+}
+
+.mini-post {
+  font-size: 0.85rem;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
