@@ -1,0 +1,21 @@
+### Health Check
+GET http://localhost:4000/health
+
+### Signup
+POST http://localhost:4000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "sheperdscraper@gmail.com",
+    "password": "password123",
+    "nickname": "Sheperd"
+}
+
+### Signin
+POST http://localhost:4000/auth/signin
+Content-Type: application/json
+
+{
+    "email": "sheperdscraper@gmail.com",
+    "password": "password123"
+}
