@@ -1,16 +1,21 @@
-import { useState } from "react";
-import { mockPosts } from "../data/mockPosts";
+import { useEffect, useState } from "react";
+// import { mockPosts } from "../data/mockPosts";
 import type { Post } from "../types/post";
 import PostCard from "../components/post/PostCard";
 import { useOutletContext } from "react-router-dom";
+import { getPosts } from "../services/postsService";
 
 export default function HomePage() {
   const [sort, setSort] = useState<"new" | "trending" | "discussed">("new");
   // const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const { selectedTag } = useOutletContext<{ selectedTag: string | null }>();
   
+  const [posts, setPosts] = useState<Post[]>([]);
+  useEffect(() => {
+    getPosts().then(setPosts);
+  }, []);
 
-  const sortedPosts = [...mockPosts]
+  const sortedPosts = [...posts]
     .filter((post) =>
       selectedTag ? post.tags.includes(selectedTag) : true
     )

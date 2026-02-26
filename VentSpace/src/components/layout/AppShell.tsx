@@ -1,14 +1,30 @@
 import { Outlet, Link, NavLink } from "react-router-dom";
 import RightSidebar from "../../components/RightSideBar";
-import { mockPosts } from "../../data/mockPosts";
-import { useState } from "react";
+// import { mockPosts } from "../../data/mockPosts";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AppShell() {
-
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  // const allTags = Array.from(
+  //   new Set(mockPosts.flatMap(post => post.tags))
+  // );
+
+  const [posts, setPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/posts")
+      .then(res => res.json())
+      .then(data => setPosts(data));
+  }, []);
+
   const allTags = Array.from(
-  new Set(mockPosts.flatMap(post => post.tags))
+    new Set(posts.flatMap(post => post.tags))
   );
+
+
+  const { user, logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-stone-100 text-slate-800">
@@ -24,7 +40,8 @@ export default function AppShell() {
             VentSpace
           </Link>
 
-          <nav className="flex gap-8 text-sm font-medium">
+          <nav className="flex gap-6 items-center text-sm font-medium">
+
             <NavLink
               to="/feed"
               className={({ isActive }) =>
@@ -33,19 +50,60 @@ export default function AppShell() {
                   : "text-slate-600 hover:text-indigo-500 transition"
               }
             >
-              Feed
+              My Feed
             </NavLink>
 
-            <NavLink
-              to="/new"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-indigo-500"
-                  : "text-slate-600 hover:text-indigo-500 transition"
-              }
-            >
-              New Post
-            </NavLink>
+            {user && (
+              <NavLink
+                to="/new"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-indigo-500"
+                    : "text-slate-600 hover:text-indigo-500 transition"
+                }
+              >
+                New Post
+              </NavLink>
+            )}
+
+            {!user ? (
+              <>
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-indigo-500"
+                      : "text-slate-600 hover:text-indigo-500 transition"
+                  }
+                >
+                  Login
+                </NavLink>
+
+                <NavLink
+                  to="/signup"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-indigo-500"
+                      : "text-slate-600 hover:text-indigo-500 transition"
+                  }
+                >
+                  Sign Up
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <span className="text-slate-500">
+                  {user.nickname}
+                </span>
+
+                <button
+                  onClick={logout}
+                  className="text-red-500 hover:underline"
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </nav>
         </div>
       </header>
@@ -87,7 +145,7 @@ export default function AppShell() {
 
         {/* RIGHT SIDEBAR */}
         <aside className="hidden lg:block col-span-3">
-          <RightSidebar posts={mockPosts} />
+          <RightSidebar posts={posts} />
         </aside>
 
       </div>

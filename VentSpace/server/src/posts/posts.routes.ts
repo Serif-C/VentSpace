@@ -41,12 +41,14 @@ router.get("/:id", async (req, res) => {
 router.post("/", requireAuth, async (req: AuthedRequest, res) => {
   try {
     const body = z.object({
+      title: z.string().min(1).max(200),
       content: z.string().min(1).max(5000),
       tags: z.array(z.string().min(1).max(20)).max(10).default([]),
     }).parse(req.body);
 
     const post = await prisma.post.create({
       data: {
+        title: body.title,
         content: body.content,
         tags: JSON.stringify(body.tags),
         authorId: req.userId!,

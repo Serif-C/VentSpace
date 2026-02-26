@@ -3,6 +3,7 @@ import type { Post } from "../types/post";
 export const mockPosts: Post[] = [
   {
     id: "1",
+    title: "Feeling overwhelmed",
     content: "I’ve been feeling overwhelmed lately and needed somewhere to express it.",
     tags: ["stress", "life"],
     createdAt: "2026-02-20",
@@ -15,6 +16,7 @@ export const mockPosts: Post[] = [
   },
   {
     id: "2",
+    title: "Small wins",
     content: "Today was actually a good day. I’m proud of small progress.",
     tags: ["growth", "positivity"],
     createdAt: "2026-02-19",
@@ -27,6 +29,7 @@ export const mockPosts: Post[] = [
   },
   {
     id: "3",
+    title: "Feeling stuck",
     content: "Does anyone else feel stuck in life sometimes?",
     tags: ["reflection"],
     createdAt: "2026-02-18",

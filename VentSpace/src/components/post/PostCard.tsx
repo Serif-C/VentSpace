@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import type { Post } from "../../types/post";
 
+
 type Props = {
   post: Post;
   onTagClick?: (tag: string) => void;
 };
 
-export default function PostCard({ post, onTagClick }: Props) {
 
+export default function PostCard({ post, onTagClick }: Props) {
+  
   return (
     <Link
       to={`/post/${post.id}`}
@@ -16,8 +18,12 @@ export default function PostCard({ post, onTagClick }: Props) {
                  transition-all duration-200 cursor-pointer"
     >
       {/* Content */}
-      <p className="text-slate-800 leading-relaxed mb-4">
-        {post.content}
+      <h2 className="text-lg font-semibold mb-2">{post.title}</h2>
+
+      <p className="text-gray-700">
+        {post.content.length > 150
+          ? post.content.slice(0, 150) + "..."
+          : post.content}
       </p>
 
       {/* Tags */}
