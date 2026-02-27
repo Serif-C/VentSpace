@@ -9,8 +9,9 @@ router.get("/", async (_req, res) => {
   const posts = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
     include: {
-      author: { select: { id: true, nickname: true, avatarUrl: true } },
-      _count: { select: { comments: true, reactions: true } },
+    author: { select: { id: true, nickname: true, avatarUrl: true } },
+    reactions: true, // 🔥 ADD THIS
+    _count: { select: { comments: true, reactions: true } },
     },
   });
 
@@ -18,6 +19,27 @@ router.get("/", async (_req, res) => {
     ...p,
     tags: JSON.parse(p.tags) as string[],
   })));
+});
+
+router.get("/me", requireAuth, async (req: AuthedRequest, res) => {
+  const posts = await prisma.post.findMany({
+    where: {
+      authorId: req.userId!,
+    },
+    orderBy: { createdAt: "desc" },
+    include: {
+    author: { select: { id: true, nickname: true, avatarUrl: true } },
+    reactions: true, // 🔥 MUST EXIST
+    _count: { select: { comments: true, reactions: true } },
+    },
+  });
+
+  res.json(
+    posts.map((p) => ({
+      ...p,
+      tags: JSON.parse(p.tags) as string[],
+    }))
+  );
 });
 
 router.get("/:id", async (req, res) => {
@@ -29,7 +51,7 @@ router.get("/:id", async (req, res) => {
         orderBy: { createdAt: "asc" },
         include: { author: { select: { id: true, nickname: true, avatarUrl: true } } },
       },
-      reactions: true,
+        reactions: true,
     },
   });
 
