@@ -42,4 +42,69 @@ router.post("/", requireAuth, async (req: AuthedRequest, res) => {
   }
 });
 
+router.patch("/:id", requireAuth, async (req: AuthedRequest, res) => {
+  try {
+    const body = z.object({
+      content: z.string().min(1).max(2000),
+    }).parse(req.body);
+
+    const existing = await prisma.comment.findUnique({
+      where: {
+        id: Array.isArray(req.params.id)
+          ? req.params.id[0]
+          : req.params.id,
+      },
+    });
+
+    if (!existing) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    if (existing.authorId !== req.userId) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    const updated = await prisma.comment.update({
+      where: {
+        id: Array.isArray(req.params.id)
+          ? req.params.id[0]
+          : req.params.id,
+      },
+      data: { content: body.content },
+    });
+
+    res.json(updated);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message || "Update comment failed" });
+  }
+});
+
+router.delete("/:id", requireAuth, async (req: AuthedRequest, res) => {
+  try {
+    const commentId = Array.isArray(req.params.id)
+      ? req.params.id[0]
+      : req.params.id;
+
+    const existing = await prisma.comment.findUnique({
+      where: { id: commentId },
+    });
+
+    if (!existing) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    if (existing.authorId !== req.userId) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    await prisma.comment.delete({
+      where: { id: commentId },
+    });
+
+    res.json({ success: true });
+  } catch (e: any) {
+    res.status(400).json({ error: e.message || "Delete comment failed" });
+  }
+});
+
 export default router;
