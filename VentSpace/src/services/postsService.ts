@@ -2,14 +2,17 @@ import type { Post } from "../types/post";
 
 const API_URL = "http://localhost:4000";
 
-export async function getPosts(): Promise<Post[]> {
-  const res = await fetch("http://localhost:4000/posts");
+export async function getPosts(search?: string): Promise<Post[]> {
+  const url = search
+    ? `${API_URL}/posts?search=${encodeURIComponent(search)}`
+    : `${API_URL}/posts`;
+
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch posts");
 
   const data = await res.json();
 
   return data.map((p: any): Post => {
-
     const reactionCounts = {
       heart: p.reactions?.filter((r: any) => r.kind === "heart").length ?? 0,
       support: p.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
@@ -77,7 +80,6 @@ export async function getMyPosts(token: string): Promise<Post[]> {
   const data = await res.json();
 
   return data.map((p: any): Post => {
-
     const reactionCounts = {
       heart: p.reactions?.filter((r: any) => r.kind === "heart").length ?? 0,
       support: p.reactions?.filter((r: any) => r.kind === "support").length ?? 0,

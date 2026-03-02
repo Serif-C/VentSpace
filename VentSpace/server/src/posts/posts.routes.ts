@@ -5,20 +5,42 @@ import { requireAuth, type AuthedRequest } from "../auth/auth.middleware";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+router.get("/", async (req, res) => {
+  const search = req.query.search as string | undefined;
+
+  const where = search
+  ? {
+      OR: [
+        {
+          title: {
+            contains: search,
+          },
+        },
+        {
+          tags: {
+            contains: search,
+          },
+        },
+      ],
+    }
+  : undefined;
+
   const posts = await prisma.post.findMany({
+    where,
     orderBy: { createdAt: "desc" },
     include: {
-    author: { select: { id: true, nickname: true, avatarUrl: true } },
-    reactions: true, // 🔥 ADD THIS
-    _count: { select: { comments: true, reactions: true } },
+      author: { select: { id: true, nickname: true, avatarUrl: true } },
+      reactions: true,
+      _count: { select: { comments: true, reactions: true } },
     },
   });
 
-  res.json(posts.map(p => ({
-    ...p,
-    tags: JSON.parse(p.tags) as string[],
-  })));
+  res.json(
+    posts.map((p) => ({
+      ...p,
+      tags: JSON.parse(p.tags) as string[],
+    }))
+  );
 });
 
 router.get("/me", requireAuth, async (req: AuthedRequest, res) => {

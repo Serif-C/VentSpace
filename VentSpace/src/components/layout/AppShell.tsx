@@ -3,14 +3,10 @@ import RightSidebar from "../../components/RightSideBar";
 // import { mockPosts } from "../../data/mockPosts";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-
-  // const allTags = Array.from(
-  //   new Set(mockPosts.flatMap(post => post.tags))
-  // );
-
   const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
@@ -19,26 +15,61 @@ export default function AppShell() {
       .then(data => setPosts(data));
   }, []);
 
-  const allTags = Array.from(
-    new Set(posts.flatMap(post => post.tags))
-  );
+  const tagCounts: Record<string, number> = {};
+
+  posts.forEach(post => {
+    post.tags.forEach((tag: string) => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+  });
+
+  const sortedTags = Object.entries(tagCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([tag]) => tag);
 
 
   const { user, logout } = useAuth();
+
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const [showAllTags, setShowAllTags] = useState(false);
+
+  function handleSearch(e: React.FormEvent) {
+  e.preventDefault();
+  navigate(`/?search=${encodeURIComponent(search)}`);
+  }
 
   return (
     <div className="min-h-screen bg-stone-100 text-slate-800">
 
       {/* Top Navbar */}
       <header className="bg-white border-b border-stone-200 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center px-6 py-4">
 
+           {/* LEFT LOGO */}
           <Link
             to="/"
             className="text-2xl font-semibold text-indigo-500"
           >
             VentSpace
           </Link>
+
+          {/* CENTER SEARCH */}
+          <form
+            onSubmit={handleSearch}
+            className="flex-1 flex justify-center px-6"
+          >
+            <input
+              type="text"
+              placeholder="Search by tag or title..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+          </form>
+
+          {/* RIGHT NAV */}
+          <nav className="flex gap-6 items-center text-sm font-medium"></nav>
 
           <nav className="flex gap-6 items-center text-sm font-medium">
 
@@ -125,15 +156,26 @@ export default function AppShell() {
               🔥 All
             </button>
 
-            {allTags.map(tag => (
+            {sortedTags
+            .slice(0, showAllTags ? sortedTags.length : 5)
+            .map(tag => (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
                 className="block text-sm text-slate-500 hover:text-indigo-500"
               >
-                #{tag}
+                #{tag} ({tagCounts[tag]})
               </button>
             ))}
+
+            {sortedTags.length > 5 && (
+              <button
+                onClick={() => setShowAllTags(prev => !prev)}
+                className="text-xs text-indigo-500 hover:underline mt-2"
+              >
+                {showAllTags ? "Show Less" : "Show More"}
+              </button>
+            )}
 
           </div>
         </aside>
