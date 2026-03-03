@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import CommentItem from "../components/post/CommentItem";
 import { useLocation } from "react-router-dom";
+import { toggleReaction } from "../services/postsService";
 
 const API_URL = "http://localhost:4000";
 
@@ -13,6 +14,19 @@ export default function PostPage() {
   const { token, user } = useAuth();
 
   const [post, setPost] = useState<any>(null);
+
+  const [reactionCounts, setReactionCounts] = useState<{
+  heart: number;
+  support: number;
+  thoughtful: number;
+  }>({
+    heart: 0,
+    support: 0,
+    thoughtful: 0,
+  });
+
+  const [activeReactions, setActiveReactions] = useState<string[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -24,7 +38,13 @@ export default function PostPage() {
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
   async function fetchPost() {
-    const res = await fetch(`${API_URL}/posts/${id}`);
+    const res = await fetch(`${API_URL}/posts/${id}`, {
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined,
+    });
     if (!res.ok) {
       setPost(null);
       setLoading(false);
@@ -33,6 +53,16 @@ export default function PostPage() {
 
     const data = await res.json();
     setPost(data);
+
+    const counts = {
+      heart: data.reactions?.filter((r: any) => r.kind === "heart").length ?? 0,
+      support: data.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
+      thoughtful:
+        data.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
+    };
+
+    setReactionCounts(counts);
+    setActiveReactions(data.viewerReactions ?? []);
     setEditTitle(data.title);
     setEditContent(data.content);
     setEditTags(data.tags.join(", "));
@@ -121,22 +151,32 @@ export default function PostPage() {
     fetchPost();
   }
 
-  async function reactToPost(kind: string) {
+  async function reactToPost(
+  kind: "heart" | "support" | "thoughtful"
+  ) {
     if (!token) return;
 
-    await fetch(`${API_URL}/reactions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
+    try {
+      const result = await toggleReaction({
         kind,
         postId: id,
-      }),
-    });
+      });
 
-    fetchPost();
+      setReactionCounts((prev) => ({
+        ...prev,
+        [kind]: result.active
+          ? prev[kind] + 1
+          : Math.max(prev[kind] - 1, 0),
+      }));
+
+      setActiveReactions((prev) =>
+        result.active
+          ? [...prev, kind]
+          : prev.filter((k) => k !== kind)
+      );
+    } catch (err) {
+      console.error("Reaction failed", err);
+    }
   }
 
   async function reactToComment(kind: string, commentId: string) {
@@ -161,13 +201,6 @@ export default function PostPage() {
   if (!post) return <p>Post not found</p>;
 
   const isAuthor = user && post.author && user.id === post.author.id;
-
-  const reactionCounts = {
-    heart: post.reactions?.filter((r: any) => r.kind === "heart").length ?? 0,
-    support: post.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
-    thoughtful:
-      post.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
-  };
 
 function buildCommentTree(comments: any[]) {
   const map = new Map<string, any>();
@@ -270,17 +303,42 @@ const commentTree = buildCommentTree(post.comments || []);
             </div>
           )}
 
-          <div className="flex gap-6 mb-6 text-sm">
-            <button onClick={() => reactToPost("heart")}>
-              ❤️ {reactionCounts.heart}
-            </button>
-            <button onClick={() => reactToPost("support")}>
-              🤝 {reactionCounts.support}
-            </button>
-            <button onClick={() => reactToPost("thoughtful")}>
-              💭 {reactionCounts.thoughtful}
-            </button>
-          </div>
+        <div className="flex gap-6 mb-6 text-sm">
+
+          <button
+            onClick={() => reactToPost("heart")}
+            className={`transition hover:scale-110 ${
+              activeReactions.includes("heart")
+                ? "text-red-500 font-semibold"
+                : ""
+            }`}
+          >
+            ❤️ {reactionCounts.heart}
+          </button>
+
+          <button
+            onClick={() => reactToPost("support")}
+            className={`transition hover:scale-110 ${
+              activeReactions.includes("support")
+                ? "text-green-600 font-semibold"
+                : ""
+            }`}
+          >
+            🤝 {reactionCounts.support}
+          </button>
+
+          <button
+            onClick={() => reactToPost("thoughtful")}
+            className={`transition hover:scale-110 ${
+              activeReactions.includes("thoughtful")
+                ? "text-indigo-600 font-semibold"
+                : ""
+            }`}
+          >
+            💭 {reactionCounts.thoughtful}
+          </button>
+
+        </div>
 
           <h2 className="font-semibold mb-2">
             Comments ({post.comments?.length ?? 0})

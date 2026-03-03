@@ -19,3 +19,26 @@ export function requireAuth(req: AuthedRequest, res: Response, next: NextFunctio
     return res.status(401).json({ error: "Invalid token" });
   }
 }
+
+export function optionalAuth(
+  req: AuthedRequest,
+  _res: Response,
+  next: NextFunction
+) {
+  const auth = req.headers.authorization;
+
+  if (!auth?.startsWith("Bearer ")) {
+    return next(); // no token → continue silently
+  }
+
+  const token = auth.slice("Bearer ".length);
+
+  try {
+    const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
+    req.userId = payload.userId;
+  } catch {
+    // invalid token → ignore silently
+  }
+
+  next();
+}

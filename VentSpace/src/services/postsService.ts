@@ -1,22 +1,27 @@
 import type { Post } from "../types/post";
+import { apiFetch } from "./api";
 
-const API_URL = "http://localhost:4000";
+export async function getPosts(params?: {
+  search?: string;
+  cursor?: string | null;
+  take?: number;
+}): Promise<{ posts: Post[]; nextCursor: string | null }> {
+  const query = new URLSearchParams();
 
-export async function getPosts(search?: string): Promise<Post[]> {
-  const url = search
-    ? `${API_URL}/posts?search=${encodeURIComponent(search)}`
-    : `${API_URL}/posts`;
+  if (params?.search) query.append("search", params.search);
+  if (params?.cursor) query.append("cursor", params.cursor);
+  if (params?.take) query.append("take", String(params.take));
 
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to fetch posts");
+  const data = await apiFetch(`/posts?${query.toString()}`, {
+    auth: true,
+  });
 
-  const data = await res.json();
-
-  return data.map((p: any): Post => {
+  const mappedPosts: Post[] = data.items.map((p: any) => {
     const reactionCounts = {
       heart: p.reactions?.filter((r: any) => r.kind === "heart").length ?? 0,
       support: p.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
-      thoughtful: p.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
+      thoughtful:
+        p.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
     };
 
     return {
@@ -29,33 +34,27 @@ export async function getPosts(search?: string): Promise<Post[]> {
       commentCount: p._count?.comments ?? 0,
     };
   });
+
+  return {
+    posts: mappedPosts,
+    nextCursor: data.nextCursor ?? null,
+  };
 }
 
 export async function createPost(
   title: string,
   content: string,
-  tags: string[],
-  token: string
+  tags: string[]
 ) {
-  const res = await fetch(`${API_URL}/posts`, {
+  const data = await apiFetch("/posts", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    auth: true,
     body: JSON.stringify({ title, content, tags }),
   });
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data?.error || "Failed to create post");
-  }
-
-  // Optional: map the created post to your Post type too
   const p = data as any;
 
-  const mapped: Post = {
+  return {
     id: p.id,
     title: p.title,
     content: p.content,
@@ -64,26 +63,19 @@ export async function createPost(
     reactions: { heart: 0, support: 0, thoughtful: 0 },
     commentCount: 0,
   };
-
-  return mapped;
 }
 
-export async function getMyPosts(token: string): Promise<Post[]> {
-  const res = await fetch("http://localhost:4000/posts/me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+export async function getMyPosts(): Promise<Post[]> {
+  const data = await apiFetch("/posts/me", {
+    auth: true,
   });
-
-  if (!res.ok) throw new Error("Failed to fetch my posts");
-
-  const data = await res.json();
 
   return data.map((p: any): Post => {
     const reactionCounts = {
       heart: p.reactions?.filter((r: any) => r.kind === "heart").length ?? 0,
       support: p.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
-      thoughtful: p.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
+      thoughtful:
+        p.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
     };
 
     return {
@@ -94,6 +86,20 @@ export async function getMyPosts(token: string): Promise<Post[]> {
       createdAt: p.createdAt,
       reactions: reactionCounts,
       commentCount: p._count?.comments ?? 0,
+      viewerReactions: p.viewerReactions ?? [],
+      
     };
+  });
+}
+
+export async function toggleReaction(params: {
+  kind: "heart" | "support" | "thoughtful";
+  postId?: string;
+  commentId?: string;
+}) {
+  return apiFetch("/reactions", {
+    method: "POST",
+    auth: true,
+    body: JSON.stringify(params),
   });
 }

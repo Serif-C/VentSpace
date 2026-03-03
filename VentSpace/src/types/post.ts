@@ -10,4 +10,5 @@ export type Post = {
     thoughtful: number;
   };
   commentCount: number;
+  viewerReactions: string[];
 };

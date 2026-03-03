@@ -4,17 +4,26 @@ import RightSidebar from "../../components/RightSideBar";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { getPosts } from "../../services/postsService";
+import NotificationBell from "./NotificationBell";
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/posts")
-      .then(res => res.json())
-      .then(data => setPosts(data));
-  }, []);
+  async function loadSidebarPosts() {
+    try {
+      const { posts } = await getPosts({ take: 50 });
+      setPosts(posts);
+    } catch {
+      setPosts([]);
+    }
+  }
 
+  loadSidebarPosts();
+  }, []);
+  
   const tagCounts: Record<string, number> = {};
 
   posts.forEach(post => {
@@ -123,6 +132,7 @@ export default function AppShell() {
               </>
             ) : (
               <>
+              <NotificationBell />
                 <span className="text-slate-500">
                   {user.nickname}
                 </span>

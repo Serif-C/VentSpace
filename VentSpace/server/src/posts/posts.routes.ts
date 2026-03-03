@@ -1,33 +1,46 @@
 import { Router } from "express";
 import { z } from "zod";
 import { prisma } from "../prisma";
-import { requireAuth, type AuthedRequest } from "../auth/auth.middleware";
+import {
+  requireAuth,
+  optionalAuth,
+  type AuthedRequest,
+} from "../auth/auth.middleware";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/", optionalAuth, async (req: AuthedRequest, res) => {
   const search = req.query.search as string | undefined;
+  const cursor = req.query.cursor as string | undefined;
+  const take = parseInt(req.query.take as string) || 10;
 
   const where = search
-  ? {
-      OR: [
-        {
-          title: {
-            contains: search,
+    ? {
+        OR: [
+          {
+            title: {
+              contains: search,
+            },
           },
-        },
-        {
-          tags: {
-            contains: search,
+          {
+            tags: {
+              contains: search,
+            },
           },
-        },
-      ],
-    }
-  : undefined;
+        ],
+      }
+    : undefined;
 
   const posts = await prisma.post.findMany({
     where,
     orderBy: { createdAt: "desc" },
+    take: take + 1,
+    ...(cursor
+      ? {
+          cursor: { id: cursor },
+          skip: 1,
+        }
+      : {}),
     include: {
       author: { select: { id: true, nickname: true, avatarUrl: true } },
       reactions: true,
@@ -35,12 +48,29 @@ router.get("/", async (req, res) => {
     },
   });
 
-  res.json(
-    posts.map((p) => ({
+  let nextCursor: string | null = null;
+
+  if (posts.length > take) {
+    const nextItem = posts.pop();
+    nextCursor = nextItem!.id;
+  }
+
+  res.json({
+  items: posts.map((p) => {
+    const viewerReactions = req.userId
+      ? p.reactions
+          .filter((r) => r.userId === req.userId)
+          .map((r) => r.kind)
+      : [];
+
+    return {
       ...p,
       tags: JSON.parse(p.tags) as string[],
-    }))
-  );
+      viewerReactions,
+    };
+  }),
+  nextCursor,
+  });
 });
 
 router.get("/me", requireAuth, async (req: AuthedRequest, res) => {
@@ -64,25 +94,41 @@ router.get("/me", requireAuth, async (req: AuthedRequest, res) => {
   );
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", optionalAuth, async (req: AuthedRequest, res) => {
   const post = await prisma.post.findUnique({
-    where: { id: req.params.id },
+    where: {
+      id: Array.isArray(req.params.id)
+        ? req.params.id[0]
+        : req.params.id,
+    },
     include: {
       author: { select: { id: true, nickname: true, avatarUrl: true } },
       comments: {
-      orderBy: { createdAt: "asc" },
-      include: {
-        author: { select: { id: true, nickname: true, avatarUrl: true } },
-        reactions: true,
+        orderBy: { createdAt: "asc" },
+        include: {
+          author: { select: { id: true, nickname: true, avatarUrl: true } },
+          reactions: true,
+        },
       },
-    },
-    reactions: true, // Reactions for the post itself
+      reactions: true,
     },
   });
 
-  if (!post) return res.status(404).json({ error: "Not found" });
+  if (!post) {
+    return res.status(404).json({ error: "Not found" });
+  }
 
-  res.json({ ...post, tags: JSON.parse(post.tags) as string[] });
+  const viewerReactions = req.userId
+    ? post.reactions
+        .filter((r: { userId: string }) => r.userId === req.userId)
+        .map((r: { kind: string }) => r.kind)
+    : [];
+
+  res.json({
+    ...post,
+    tags: JSON.parse(post.tags) as string[],
+    viewerReactions,
+  });
 });
 
 router.post("/", requireAuth, async (req: AuthedRequest, res) => {
