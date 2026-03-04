@@ -8,6 +8,7 @@ import postsRoutes from "./posts/posts.routes";
 import commentsRoutes from "./comments/comments.routes";
 import reactionsRoutes from "./reactions/reactions.routes";
 import notificationsRoutes from "./notifications/notifications.routes";
+import chatRoutes from "./chat/chat.routes";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/posts", postsRoutes);
 app.use("/comments", commentsRoutes);
 app.use("/reactions", reactionsRoutes);
 app.use("/notifications", notificationsRoutes);
+app.use("/chat", chatRoutes);
 
 app.listen(env.PORT, () => {
   console.log(`API running on http://localhost:${env.PORT}`);

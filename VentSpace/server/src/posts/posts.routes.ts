@@ -6,6 +6,7 @@ import {
   optionalAuth,
   type AuthedRequest,
 } from "../auth/auth.middleware";
+import { generateEmotionTags } from "../ai/tagGenerator";
 
 const router = Router();
 
@@ -139,16 +140,22 @@ router.post("/", requireAuth, async (req: AuthedRequest, res) => {
       tags: z.array(z.string().min(1).max(20)).max(10).default([]),
     }).parse(req.body);
 
+    const aiTags = await generateEmotionTags(body.content);
+
+    const mergedTags = Array.from(
+      new Set([...(body.tags ?? []), ...aiTags])
+    ).slice(0, 6);
+
     const post = await prisma.post.create({
       data: {
         title: body.title,
         content: body.content,
-        tags: JSON.stringify(body.tags),
+        tags: JSON.stringify(mergedTags),
         authorId: req.userId!,
       },
     });
 
-    res.json({ ...post, tags: body.tags });
+    res.json({ ...post, tags: mergedTags  });
   } catch (e: any) {
     res.status(400).json({ error: e.message || "Create post failed" });
   }

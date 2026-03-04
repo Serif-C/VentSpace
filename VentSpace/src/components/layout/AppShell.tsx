@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { getPosts } from "../../services/postsService";
 import NotificationBell from "./NotificationBell";
+import SupportChatWidget from "./SupportChatWidget";
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -214,6 +215,9 @@ export default function AppShell() {
 
       </div>
 
+        {/* Support Chat Widget */}
+        <SupportChatWidget />
+        
       <footer className="text-center text-xs text-slate-400 py-6">
         VentSpace — a safe place to reflect and breathe
       </footer>
