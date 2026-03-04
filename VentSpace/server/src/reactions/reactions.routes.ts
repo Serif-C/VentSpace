@@ -47,16 +47,68 @@ router.post("/", requireAuth, async (req: AuthedRequest, res) => {
       return res.json({ active: false });
     }
 
-    await prisma.reaction.create({
+    const newReaction = await prisma.reaction.create({
+  data: {
+    userId: req.userId!,
+    kind: body.kind,
+    postId: body.postId,
+    commentId: body.commentId,
+  },
+});
+
+// 🔔 Create notification (only if reacting to someone else's content)
+
+if (body.postId) {
+  const post = await prisma.post.findUnique({
+    where: { id: body.postId },
+    select: { authorId: true },
+  });
+
+  if (post && post.authorId !== req.userId) {
+  const author = await prisma.user.findUnique({
+    where: { id: post.authorId },
+    select: { notifyOnReactions: true },
+  });
+
+  if (author?.notifyOnReactions) {
+    await prisma.notification.create({
       data: {
-        userId: req.userId!,
-        kind: body.kind,
+        userId: post.authorId,
+        type: "reaction",
+        message: `Someone reacted ${body.kind} to your post`,
         postId: body.postId,
-        commentId: body.commentId,
       },
     });
+    }
+  }
+}
 
-    return res.json({ active: true });
+if (body.commentId) {
+  const comment = await prisma.comment.findUnique({
+    where: { id: body.commentId },
+    select: { authorId: true, postId: true },
+  });
+
+  if (comment && comment.authorId !== req.userId) {
+  const author = await prisma.user.findUnique({
+    where: { id: comment.authorId },
+    select: { notifyOnReactions: true },
+  });
+
+  if (author?.notifyOnReactions) {
+    await prisma.notification.create({
+      data: {
+        userId: comment.authorId,
+        type: "reaction",
+        message: `Someone reacted ${body.kind} to your comment`,
+        postId: comment.postId,
+      },
+    });
+  }
+}
+}
+
+return res.json({ active: true });
 
   } catch (e: any) {
     res.status(400).json({ error: e.message || "React failed" });

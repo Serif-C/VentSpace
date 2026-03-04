@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { mockPosts } from "../data/mockPosts";
 import type { Post } from "../types/post";
 import PostCard from "../components/post/PostCard";
@@ -16,6 +16,8 @@ export default function HomePage() {
 
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   
   useEffect(() => {
   const params = new URLSearchParams(location.search);
@@ -25,7 +27,34 @@ export default function HomePage() {
   setNextCursor(null);
 
   loadInitial(search || undefined);
-}, [location.search]);
+  }, [location.search]);
+
+  useEffect(() => {
+    if (!loadMoreRef.current) return;
+    if (!nextCursor) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loading) {
+          loadMore();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [nextCursor, loading]);
+
+  useEffect(() => {
+    function handleScroll() {
+      setShowScrollTop(window.scrollY > 400);
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
 async function loadInitial(search?: string) {
   setLoading(true);
@@ -91,38 +120,89 @@ async function loadMore() {
     });
 
   return (
-    <div className="home-layout">
+  <div className="space-y-8">
 
-      {/* MAIN FEED */}
-      <div className="main-feed">
-        <h2>Welcome to VentSpace</h2>
-        <p className="subtitle">
-          A safe anonymous space to vent and reflect.
-        </p>
+    {/* Page Header */}
+    <div className="bg-white border border-stone-200 rounded-xl shadow-sm">
+  
+  <div className="p-6">
+    <h1 className="text-2xl font-semibold text-slate-800">
+      Welcome to VentSpace
+    </h1>
 
-        <div className="sort-tabs">
-          <button onClick={() => setSort("new")}>🆕 New</button>
-          <button onClick={() => setSort("trending")}>🔥 Trending</button>
-          <button onClick={() => setSort("discussed")}>💬 Discussed</button>
-        </div>
+    <p className="text-sm text-slate-500 mt-1">
+      A safe anonymous space to vent and reflect.
+    </p>
+  </div>
 
-        {sortedPosts.map((post: Post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
+  {/* Sticky Tabs */}
+  <div className="sticky top-[73px] bg-white border-t border-stone-200 z-20">
+    <div className="flex gap-8 px-6 py-4 text-sm font-medium">
+      <button
+        onClick={() => setSort("new")}
+        className={`transition ${
+          sort === "new"
+            ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
+            : "text-slate-500 hover:text-indigo-500"
+        }`}
+      >
+        🆕 New
+      </button>
 
-        {nextCursor && (
-          <div className="mt-6 flex justify-center">
-            <button
-              onClick={loadMore}
-              disabled={loading}
-              className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
-            >
-              {loading ? "Loading..." : "Load More"}
-            </button>
-          </div>
-        )}
-      </div>
+      <button
+        onClick={() => setSort("trending")}
+        className={`transition ${
+          sort === "trending"
+            ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
+            : "text-slate-500 hover:text-indigo-500"
+        }`}
+      >
+        🔥 Trending
+      </button>
 
+      <button
+        onClick={() => setSort("discussed")}
+        className={`transition ${
+          sort === "discussed"
+            ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
+            : "text-slate-500 hover:text-indigo-500"
+        }`}
+      >
+        💬 Discussed
+      </button>
     </div>
-  );
+  </div>
+</div>
+
+    {/* Posts */}
+    <div className="space-y-6">
+      {sortedPosts.map((post: Post, index) => (
+        <div
+          key={post.id}
+          className="fade-in-post"
+          style={{ animationDelay: `${index * 40}ms` }}
+        >
+          <PostCard post={post} />
+        </div>
+      ))}
+    </div>
+
+    <div ref={loadMoreRef} className="h-10" />
+
+
+    {showScrollTop && (
+      <button
+        onClick={() =>
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+        className="fixed bottom-8 right-8 bg-indigo-500 text-white 
+                  w-12 h-12 rounded-full shadow-lg 
+                  hover:bg-indigo-600 transition 
+                  flex items-center justify-center text-xl"
+      >
+        ↑
+      </button>
+    )}
+  </div>
+);  
 }

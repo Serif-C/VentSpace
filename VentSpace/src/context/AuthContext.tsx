@@ -7,6 +7,7 @@ import {
 import type { ReactNode } from "react";
 import type { User, AuthResponse } from "../types/auth";
 
+
 type AuthContextType = {
   user: User | null;
   token: string | null;

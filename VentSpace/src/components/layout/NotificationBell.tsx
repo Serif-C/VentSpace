@@ -8,12 +8,40 @@ export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [previousUnread, setPreviousUnread] = useState(0);
+  const [animate, setAnimate] = useState(false);
+  const [toast, setToast] = useState<Notification | null>(null);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
   async function loadNotifications() {
     if (!user) return;
+
     const data = await getNotifications();
+
+    const newUnread = data.filter(n => !n.read).length;
+
+    // Detect new notifications
+    if (newUnread > previousUnread) {
+      setAnimate(true);
+
+       // Find newest unread notification
+      const newest = data.find(n => !n.read);
+
+      if (newest) {
+        setToast(newest);
+
+        setTimeout(() => {
+          setToast(null);
+        }, 5000);
+      }
+
+      setTimeout(() => {
+        setAnimate(false);
+      }, 600);
+    }
+
+    setPreviousUnread(newUnread);
     setNotifications(data);
   }
 
@@ -64,7 +92,9 @@ export default function NotificationBell() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={handleOpen}
-        className="relative text-slate-600 hover:text-indigo-500 transition"
+        className={`relative text-slate-600 hover:text-indigo-500 transition ${
+          animate ? "animate-bounce" : ""
+        }`}
       >
         🔔
         {unreadCount > 0 && (
@@ -102,6 +132,21 @@ export default function NotificationBell() {
             </Link>
           ))}
         </div>
+      )}
+
+      {toast && (
+        <Link
+          to={toast.postId ? `/post/${toast.postId}` : "#"}
+          onClick={() => setToast(null)}
+          className="fixed top-20 right-6 w-80 bg-white shadow-xl border border-stone-200 rounded-xl p-4 z-[9999] animate-slide-in"
+        >
+          <div className="text-sm font-medium">
+            🔔 {toast.message}
+          </div>
+          <div className="text-xs text-slate-400 mt-1">
+            {new Date(toast.createdAt).toLocaleString()}
+          </div>
+        </Link>
       )}
     </div>
   );

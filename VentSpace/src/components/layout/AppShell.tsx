@@ -132,10 +132,22 @@ export default function AppShell() {
               </>
             ) : (
               <>
+
               <NotificationBell />
                 <span className="text-slate-500">
                   {user.nickname}
                 </span>
+
+              <NavLink
+                to="/settings"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-indigo-500"
+                    : "text-slate-600 hover:text-indigo-500 transition"
+                }
+              >
+                Settings
+              </NavLink>
 
                 <button
                   onClick={logout}

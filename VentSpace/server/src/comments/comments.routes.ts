@@ -25,6 +25,13 @@ router.post("/", requireAuth, async (req: AuthedRequest, res) => {
     // Notification to post owner (basic)
     const post = await prisma.post.findUnique({ where: { id: body.postId } });
     if (post && post.authorId !== req.userId) {
+      const author = await prisma.user.findUnique({
+      where: { id: post.authorId },
+      select: { notifyOnComments: true },
+    });
+
+    if (author?.notifyOnComments) {
+      // create notification
       await prisma.notification.create({
         data: {
           userId: post.authorId,
@@ -34,6 +41,8 @@ router.post("/", requireAuth, async (req: AuthedRequest, res) => {
           commentId: comment.id,
         },
       });
+    }
+      
     }
 
     res.json(comment);
