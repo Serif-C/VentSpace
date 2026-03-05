@@ -45,7 +45,7 @@ export default function SupportChatWidget() {
     } catch (e: any) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Sorry — I had trouble responding. Try again in a moment." },
+        { role: "assistant", content: "Sorry I had trouble responding. Try again in a moment." },
       ]);
     } finally {
       setLoading(false);
