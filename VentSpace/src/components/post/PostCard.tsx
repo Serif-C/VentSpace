@@ -59,17 +59,11 @@ export default function PostCard({ post, onTagClick }: Props) {
           : post.content}
       </p>
 
-      <div className="flex flex-wrap gap-2 mb-4">
-        {post.tags.map((tag: string) => (
+      <div className="flex flex-wrap gap-2 mt-2">
+        {post.tags.map(tag => (
           <span
             key={tag}
-            onClick={(e) => {
-              e.preventDefault();
-              onTagClick?.(tag);
-            }}
-            className="text-xs bg-indigo-50 text-indigo-600 
-                       px-3 py-1 rounded-full 
-                       hover:bg-indigo-100 transition"
+            className="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full"
           >
             #{tag}
           </span>
@@ -77,42 +71,24 @@ export default function PostCard({ post, onTagClick }: Props) {
       </div>
 
       <div className="flex items-center justify-between text-xs text-slate-500">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 mt-3">
 
-          <button
-            onClick={(e) => handleReaction(e, "heart")}
-            className={`hover:scale-110 transition ${
-              activeReactions.includes("heart")
-                ? "text-red-500 font-semibold"
-                : ""
-            }`}
-          >
-            ❤️ {reactionCounts.heart}
+          <button className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-red-100">
+            ❤️ {post.reactions?.heart || 0}
           </button>
 
-          <button
-            onClick={(e) => handleReaction(e, "support")}
-            className={`hover:scale-110 transition ${
-              activeReactions.includes("support")
-                ? "text-green-600 font-semibold"
-                : ""
-            }`}
-          >
-            🤝 {reactionCounts.support}
+          <button className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-indigo-100">
+            🤝 {post.reactions?.support || 0}
           </button>
 
-          <button
-            onClick={(e) => handleReaction(e, "thoughtful")}
-            className={`hover:scale-110 transition ${
-              activeReactions.includes("thoughtful")
-                ? "text-indigo-600 font-semibold"
-                : ""
-            }`}
-          >
-            💭 {reactionCounts.thoughtful}
+          <button className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-purple-100">
+            💭 {post.reactions?.thoughtful || 0}
           </button>
 
-          <span>💬 {post.commentCount}</span>
+          <div className="ml-auto text-sm text-slate-500">
+            💬 {post.commentCount || 0}
+          </div>
+
         </div>
 
         <span>

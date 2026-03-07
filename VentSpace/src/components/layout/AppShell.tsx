@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { getPosts } from "../../services/postsService";
 import NotificationBell from "./NotificationBell";
 import SupportChatWidget from "./SupportChatWidget";
+import ActiveDiscussions from "../../components/sidebar/ActiveDiscussions";
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -79,7 +80,7 @@ export default function AppShell() {
           </form>
 
           {/* RIGHT NAV */}
-          <nav className="flex gap-6 items-center text-sm font-medium"></nav>
+          <nav className="flex gap-6 items-center text-sm font-medium"> </nav>
 
           <nav className="flex gap-6 items-center text-sm font-medium">
 
@@ -165,40 +166,101 @@ export default function AppShell() {
       {/* 3 Column Layout */}
       <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-6">
 
-        {/* LEFT SIDEBAR */}
+       {/* LEFT SIDEBAR */}
         <aside className="hidden lg:block col-span-2">
-          <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
-            <h3 className="text-sm font-semibold text-slate-600">
-              Explore
-            </h3>
+          <div className="space-y-4">
 
-            <button
-              onClick={() => setSelectedTag(null)}
-              className="block text-sm text-slate-500 hover:text-indigo-500"
-            >
-              🔥 All
-            </button>
+            {/* EXPLORE */}
+            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                Explore
+              </h3>
 
-            {sortedTags
-            .slice(0, showAllTags ? sortedTags.length : 5)
-            .map(tag => (
-              <button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className="block text-sm text-slate-500 hover:text-indigo-500"
+              <NavLink
+                to="/"
+                className="block text-sm text-slate-600 hover:text-indigo-500"
               >
-                #{tag} ({tagCounts[tag]})
-              </button>
-            ))}
+                🏠 All Posts
+              </NavLink>
 
-            {sortedTags.length > 5 && (
-              <button
-                onClick={() => setShowAllTags(prev => !prev)}
-                className="text-xs text-indigo-500 hover:underline mt-2"
+              <NavLink
+                to="/feed"
+                className="block text-sm text-slate-600 hover:text-indigo-500"
               >
-                {showAllTags ? "Show Less" : "Show More"}
-              </button>
-            )}
+                📰 My Feed
+              </NavLink>
+
+              {user && (
+                <NavLink
+                  to="/new"
+                  className="block text-sm text-slate-600 hover:text-indigo-500"
+                >
+                  ✏️ New Post
+                </NavLink>
+              )}
+            </div>
+
+            {/* TRENDING TAGS */}
+            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                Trending Tags
+              </h3>
+
+              {sortedTags.slice(0, 5).map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => setSelectedTag(tag)}
+                  className="flex justify-between w-full text-sm px-3 py-1 rounded-md hover:bg-stone-100"
+                >
+                  <span className="text-slate-600">#{tag}</span>
+                  <span className="text-xs text-slate-400">
+                    {tagCounts[tag]}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* BROWSE TAGS */}
+            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                Browse Tags
+              </h3>
+
+              <input
+                type="text"
+                placeholder="Search tags..."
+                className="w-full px-3 py-1 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                onChange={(e) => {
+                  const value = e.target.value.toLowerCase();
+                  if (!value) return;
+                  const match = sortedTags.find(tag =>
+                    tag.toLowerCase().includes(value)
+                  );
+                  if (match) setSelectedTag(match);
+                }}
+              />
+
+              <div className="flex flex-wrap gap-2 pt-2">
+                {sortedTags.slice(0, showAllTags ? sortedTags.length : 10).map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => setSelectedTag(tag)}
+                    className="text-xs px-2 py-1 bg-stone-100 rounded-full hover:bg-indigo-100 hover:text-indigo-600"
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
+
+              {sortedTags.length > 10 && (
+                <button
+                  onClick={() => setShowAllTags(prev => !prev)}
+                  className="text-xs text-indigo-500 hover:underline pt-2"
+                >
+                  {showAllTags ? "Show Less" : "Show More"}
+                </button>
+              )}
+            </div>
 
           </div>
         </aside>
@@ -209,8 +271,9 @@ export default function AppShell() {
         </main>
 
         {/* RIGHT SIDEBAR */}
-        <aside className="hidden lg:block col-span-3">
+        <aside className="hidden lg:block col-span-3 space-y-4">
           <RightSidebar posts={posts} />
+          <ActiveDiscussions />
         </aside>
 
       </div>

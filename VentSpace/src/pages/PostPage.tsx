@@ -74,6 +74,19 @@ export default function PostPage() {
   }, [id]);
 
   useEffect(() => {
+    if (!post) return;
+
+    const viewed = JSON.parse(localStorage.getItem("recentPosts") || "[]");
+
+    const updated = [
+      { id: post.id, title: post.title },
+      ...viewed.filter((p: any) => p.id !== post.id),
+    ].slice(0, 5);
+
+    localStorage.setItem("recentPosts", JSON.stringify(updated));
+  }, [post]);
+
+  useEffect(() => {
   if (!post) return;
 
   const params = new URLSearchParams(location.search);

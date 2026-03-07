@@ -74,6 +74,28 @@ router.get("/", optionalAuth, async (req: AuthedRequest, res) => {
   });
 });
 
+router.get("/active-discussions", async (req, res) => {
+  const posts = await prisma.post.findMany({
+    orderBy: {
+      comments: {
+        _count: "desc",
+      },
+    },
+    take: 5,
+    select: {
+      id: true,
+      title: true,
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+  });
+
+  res.json(posts);
+});
+
 router.get("/me", requireAuth, async (req: AuthedRequest, res) => {
   const posts = await prisma.post.findMany({
     where: {

@@ -1,4 +1,6 @@
 export type Post = {
+  _count: any;
+  comments: any;
   id: string;
   title: string;
   content: string;
