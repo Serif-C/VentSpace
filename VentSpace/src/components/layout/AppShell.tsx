@@ -8,6 +8,7 @@ import { getPosts } from "../../services/postsService";
 import NotificationBell from "./NotificationBell";
 import SupportChatWidget from "./SupportChatWidget";
 import ActiveDiscussions from "../../components/sidebar/ActiveDiscussions";
+import ReflectionPrompt from "../../components/sidebar/ReflectionPrompt";
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);

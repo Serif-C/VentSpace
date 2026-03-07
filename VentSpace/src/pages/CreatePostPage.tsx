@@ -3,12 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { createPost } from "../services/postsService";
 import { useAuth } from "../context/AuthContext";
 
+const prompts = [
+  "What has been weighing on your mind lately?",
+  "What made today harder than expected?",
+  "Is there something you wish someone understood about you?",
+  "What emotion have you been feeling the most recently?",
+  "What’s something small that bothered you today?",
+  "What’s something you wish you could say out loud?",
+];
+
 export default function CreatePostPage() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const navigate = useNavigate();
   const { token } = useAuth();
+
+  const prompt = prompts[new Date().getDate() % prompts.length];
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,7 +29,6 @@ export default function CreatePostPage() {
         title,
         content,
         tags.split(",").map(t => t.trim()),
-        token!
       );
 
       navigate("/feed");
@@ -39,6 +49,11 @@ export default function CreatePostPage() {
         onChange={(e) => setTitle(e.target.value)}
         className="w-full border rounded p-2 mb-3"
       />
+
+      {/* Reflection Prompt */}
+      <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-3 text-sm text-indigo-700">
+        ✨ <span className="font-medium">Reflection prompt:</span> {prompt}
+      </div>
 
       <textarea
         value={content}
