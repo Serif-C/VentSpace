@@ -9,13 +9,33 @@ export default function SettingsPage() {
 
   const [password, setPassword] = useState("");
 
+  const [theme, setTheme] = useState("default");
+
+  // useEffect(() => {
+  //   async function load() {
+  //     const data = await getUserSettings();
+  //     setSettings(data);
+  //     setLoading(false);
+  //   }
+  //   load();
+  // }, []);
+
   useEffect(() => {
     async function load() {
       const data = await getUserSettings();
       setSettings(data);
+
+      const savedTheme = localStorage.getItem("theme") || "default";
+      setTheme(savedTheme);
+
       setLoading(false);
     }
     load();
+  }, []);
+
+  useEffect(() => {
+  const saved = localStorage.getItem("theme") || "default";
+  document.documentElement.setAttribute("data-theme", saved);
   }, []);
 
   async function handleSave() {
@@ -71,6 +91,27 @@ export default function SettingsPage() {
             }
             className="w-full border rounded-lg px-3 py-2"
           />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-1">Theme</label>
+
+          <select
+            value={theme}
+            onChange={(e) => {
+              const value = e.target.value;
+              setTheme(value);
+
+              document.documentElement.setAttribute("data-theme", value);
+              localStorage.setItem("theme", value);
+            }}
+            className="w-full border rounded-lg px-3 py-2"
+          >
+            <option value="default">Calm (Default)</option>
+            <option value="dark">Dark</option>
+            <option value="ocean">Ocean</option>
+            <option value="forest">Forest</option>
+          </select>
         </div>
       </div>
 

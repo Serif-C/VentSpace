@@ -48,7 +48,7 @@ export default function PostCard({ post, onTagClick }: Props) {
     <Link
       to={`/post/${post.id}`}
       className="block bg-white rounded-xl border border-stone-200 p-5 
-                 shadow-sm hover:shadow-lg hover:-translate-y-1 
+                 shadow-md hover:shadow-xl hover:-translate-y-[2px]
                  transition-all duration-200 cursor-pointer"
     >
       <h2 className="text-lg font-semibold mb-2">{post.title}</h2>
@@ -76,7 +76,7 @@ export default function PostCard({ post, onTagClick }: Props) {
         <div className="relative group">
           <button
             onClick={(e) => handleReaction(e, "heart")}
-            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-red-100"
+            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95"
           >
             ❤️ {reactionCounts.heart || 0}
           </button>

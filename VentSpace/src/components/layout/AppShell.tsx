@@ -9,6 +9,7 @@ import NotificationBell from "./NotificationBell";
 import SupportChatWidget from "./SupportChatWidget";
 import ActiveDiscussions from "../../components/sidebar/ActiveDiscussions";
 import { useLocation } from "react-router-dom";
+import { Heart, Users, MessageCircle, HandHeart } from "lucide-react";
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -54,10 +55,14 @@ export default function AppShell() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-100 text-slate-800">
+    <div className="min-h-screen"
+    style={{
+      backgroundColor: "var(--bg)",
+      color: "var(--text)"
+    }}>
 
       {/* Top Navbar */}
-      <header className="bg-white border-b border-stone-200 sticky top-0 z-30">
+      <header className="bg-white border-b backdrop-blur bg-white/60 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto flex items-center px-6 py-4">
 
            {/* LEFT LOGO */}
@@ -166,6 +171,7 @@ export default function AppShell() {
               </>
             )}
           </nav>
+          
         </div>
       </header>
 
@@ -177,7 +183,11 @@ export default function AppShell() {
           <div className="space-y-4">
 
             {/* EXPLORE */}
-            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+            <div className="rounded-xl shadow-sm p-4"
+            style={{
+              backgroundColor: "var(--card)",
+              border: "1px solid var(--border)"
+            }}>
               <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
                 Explore
               </h3>
@@ -207,7 +217,11 @@ export default function AppShell() {
             </div>
 
             {/* TRENDING TAGS */}
-            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+            <div className="rounded-xl shadow-sm p-4"
+            style={{
+              backgroundColor: "var(--card)",
+              border: "1px solid var(--border)"
+            }}>
               <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
                 Trending Tags
               </h3>
@@ -227,10 +241,15 @@ export default function AppShell() {
             </div>
 
             {/* BROWSE TAGS */}
-            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+            <div className="rounded-xl shadow-sm p-4"
+            style={{
+              backgroundColor: "var(--card)",
+              border: "1px solid var(--border)"
+            }}>
               <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
                 Browse Tags
               </h3>
+              <div className="text-xs text-slate-400 mb-2"></div>
 
               <input
                 type="text"
@@ -294,3 +313,5 @@ export default function AppShell() {
     </div>
   );
 }
+
+

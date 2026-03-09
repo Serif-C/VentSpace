@@ -33,7 +33,11 @@ export default function RightSidebar({ posts }: Props) {
     <div className="space-y-4">
 
       {/* REMINDER */}
-      <div className="bg-white rounded-xl shadow-sm p-4">
+      <div className="rounded-xl shadow-sm p-4"
+      style={{
+        backgroundColor: "var(--card)",
+        border: "1px solid var(--border)"
+      }}>
         <h3 className="text-sm font-semibold text-slate-600">
           Today’s Reminder
         </h3>
@@ -44,7 +48,11 @@ export default function RightSidebar({ posts }: Props) {
       </div>
 
       {/* RECENTLY VIEWED */}
-      <div className="bg-white rounded-xl shadow-sm p-4">
+      <div className="rounded-xl shadow-sm p-4"
+      style={{
+        backgroundColor: "var(--card)",
+        border: "1px solid var(--border)"
+      }}>
         <h3 className="text-sm font-semibold text-slate-600">
           Recently Viewed
         </h3>

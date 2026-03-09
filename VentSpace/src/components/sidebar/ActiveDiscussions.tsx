@@ -27,7 +27,11 @@ export default function ActiveDiscussions() {
   }, []);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="rounded-xl shadow-sm p-4"
+    style={{
+      backgroundColor: "var(--card)",
+      border: "1px solid var(--border)"
+    }}>
       <h3 className="text-sm font-semibold mb-3">
         🔥 Active Discussions
       </h3>
