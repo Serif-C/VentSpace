@@ -19,10 +19,12 @@ export default function PostPage() {
   heart: number;
   support: number;
   thoughtful: number;
+  thankful: number;
   }>({
     heart: 0,
     support: 0,
     thoughtful: 0,
+    thankful: 0,
   });
 
   const [activeReactions, setActiveReactions] = useState<string[]>([]);
@@ -59,6 +61,8 @@ export default function PostPage() {
       support: data.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
       thoughtful:
         data.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
+      thankful:
+        data.reactions?.filter((r: any) => r.kind === "thankful").length ?? 0,
     };
 
     setReactionCounts(counts);
@@ -165,7 +169,7 @@ export default function PostPage() {
   }
 
   async function reactToPost(
-  kind: "heart" | "support" | "thoughtful"
+  kind: "heart" | "support" | "thoughtful" | "thankful"
   ) {
     if (!token) return;
 
@@ -305,16 +309,16 @@ const commentTree = buildCommentTree(post.comments || []);
             ))}
           </div>
 
-          {isAuthor && (
+          {/* {isAuthor && (
             <div className="flex gap-4 mb-4">
-              <button onClick={() => setEditing(true)} className="text-blue-600 text-sm">
+              <button onClick={() => setEditing(true)} className="text-blue-600 text-xs">
                 Edit
               </button>
-              <button onClick={handleDelete} className="text-red-600 text-sm">
+              <button onClick={handleDelete} className="text-red-600 text-xs">
                 Delete
               </button>
             </div>
-          )}
+          )} */}
 
         <div className="flex gap-6 mb-6 text-sm">
 
@@ -337,7 +341,7 @@ const commentTree = buildCommentTree(post.comments || []);
                 : ""
             }`}
           >
-            🤝 {reactionCounts.support}
+            🫂 {reactionCounts.support}
           </button>
 
           <button
@@ -350,12 +354,35 @@ const commentTree = buildCommentTree(post.comments || []);
           >
             💭 {reactionCounts.thoughtful}
           </button>
+          
+          <button
+            onClick={() => reactToPost("thankful")}
+            className={`transition hover:scale-110 ${
+              activeReactions.includes("thankful")
+                ? "text-green-600 font-semibold"
+                : ""
+            }`}
+          >
+            🙏 {reactionCounts.thankful}
+          </button>
 
         </div>
+        
 
           <h2 className="font-semibold mb-2">
             Comments ({post.comments?.length ?? 0})
           </h2>
+
+          {isAuthor && (
+            <div className="flex gap-4 mb-4">
+              <button onClick={() => setEditing(true)} className="text-blue-600 text-xs">
+                Edit
+              </button>
+              <button onClick={handleDelete} className="text-red-600 text-xs">
+                Delete
+              </button>
+            </div>
+          )}
 
           <div className="space-y-2 mb-4">
             {commentTree.map((comment: any) => (

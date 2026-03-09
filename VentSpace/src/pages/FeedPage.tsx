@@ -21,7 +21,7 @@ export default function FeedPage() {
       if (!token) return;
 
       try {
-        const data = await getMyPosts(token);
+        const data = await getMyPosts();
         setPosts(data);
       } catch (err) {
         console.error(err);

@@ -8,7 +8,7 @@ import { getPosts } from "../../services/postsService";
 import NotificationBell from "./NotificationBell";
 import SupportChatWidget from "./SupportChatWidget";
 import ActiveDiscussions from "../../components/sidebar/ActiveDiscussions";
-import ReflectionPrompt from "../../components/sidebar/ReflectionPrompt";
+import { useLocation } from "react-router-dom";
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -46,6 +46,8 @@ export default function AppShell() {
   const [search, setSearch] = useState("");
   const [showAllTags, setShowAllTags] = useState(false);
 
+  const location = useLocation();
+
   function handleSearch(e: React.FormEvent) {
   e.preventDefault();
   navigate(`/?search=${encodeURIComponent(search)}`);
@@ -61,6 +63,12 @@ export default function AppShell() {
            {/* LEFT LOGO */}
           <Link
             to="/"
+            onClick={(e) => {
+              if (location.pathname === "/") {
+                e.preventDefault();
+                window.location.reload();
+              }
+            }}
             className="text-2xl font-semibold text-indigo-500"
           >
             VentSpace
@@ -137,9 +145,6 @@ export default function AppShell() {
               <>
 
               <NotificationBell />
-                <span className="text-slate-500">
-                  {user.nickname}
-                </span>
 
               <NavLink
                 to="/settings"
@@ -149,7 +154,7 @@ export default function AppShell() {
                     : "text-slate-600 hover:text-indigo-500 transition"
                 }
               >
-                Settings
+                {user.nickname}
               </NavLink>
 
                 <button

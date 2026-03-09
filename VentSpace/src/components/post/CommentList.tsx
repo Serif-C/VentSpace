@@ -9,7 +9,9 @@ export default function CommentList({ comments }: Props) {
   return (
     <div className="space-y-3">
       {comments.map((comment) => (
-        <CommentItem key={comment.id} comment={comment} />
+        <CommentItem key={comment.id} comment={comment} refresh={function (): void {
+          throw new Error("Function not implemented.");
+        } } />
       ))}
     </div>
   );

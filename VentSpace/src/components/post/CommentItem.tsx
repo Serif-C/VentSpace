@@ -44,6 +44,7 @@ export default function CommentItem({
     heart: comment.reactions?.filter((r: any) => r.kind === "heart").length ?? 0,
     support: comment.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
     thoughtful: comment.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
+    thankful: comment.reactions?.filter((r: any) => r.kind === "thankful").length ?? 0,
   };
 
   const directReplies = comment.replies?.length ?? 0;
@@ -187,8 +188,9 @@ export default function CommentItem({
         {/* actions */}
         <div className="flex flex-wrap gap-4 text-xs mt-2 items-center">
           <button onClick={() => react("heart")}>❤️ {counts.heart}</button>
-          <button onClick={() => react("support")}>🤝 {counts.support}</button>
+          <button onClick={() => react("support")}>🫂 {counts.support}</button>
           <button onClick={() => react("thoughtful")}>💭 {counts.thoughtful}</button>
+          <button onClick={() => react("thankful")}>🙏 {counts.thankful}</button>
 
           <button onClick={() => setReplying(!replying)} className="text-blue-600">
             Reply

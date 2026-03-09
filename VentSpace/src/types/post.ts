@@ -26,6 +26,7 @@ export type Post = {
     heart: number;
     support: number;
     thoughtful: number;
+    thankful: number;
   };
 
   commentCount: number;

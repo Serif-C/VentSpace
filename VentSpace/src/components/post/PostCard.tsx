@@ -16,7 +16,7 @@ export default function PostCard({ post, onTagClick }: Props) {
 
   async function handleReaction(
   e: React.MouseEvent,
-  kind: "heart" | "support" | "thoughtful"
+  kind: "heart" | "support" | "thoughtful" | "thankful"
   ) {
     e.preventDefault();
     e.stopPropagation();
@@ -73,17 +73,61 @@ export default function PostCard({ post, onTagClick }: Props) {
       <div className="flex items-center justify-between text-xs text-slate-500">
         <div className="flex items-center gap-3 mt-3">
 
-          <button className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-red-100">
-            ❤️ {post.reactions?.heart || 0}
+        <div className="relative group">
+          <button
+            onClick={(e) => handleReaction(e, "heart")}
+            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-red-100"
+          >
+            ❤️ {reactionCounts.heart || 0}
           </button>
+          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
+            opacity-0 group-hover:opacity-100 transition 
+            bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none">
+            Show encouragement
+          </div>
+        </div>
 
-          <button className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-indigo-100">
-            🤝 {post.reactions?.support || 0}
+        <div className="relative group">
+          <button
+            onClick={(e) => handleReaction(e, "support")}
+            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-indigo-100"
+          >
+            🫂 {reactionCounts.support || 0}
           </button>
+          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
+            opacity-0 group-hover:opacity-100 transition 
+            bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none">
+            I feel the same way
+          </div>
+        </div>
 
-          <button className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-purple-100">
-            💭 {post.reactions?.thoughtful || 0}
+        <div className="relative group">
+          <button
+            onClick={(e) => handleReaction(e, "thoughtful")}
+            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-purple-100"
+          >
+            💭 {reactionCounts.thoughtful || 0}
           </button>
+          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
+            opacity-0 group-hover:opacity-100 transition 
+            bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none">
+            This made me think
+          </div>
+        </div>
+
+        <div className="relative group">
+          <button
+            onClick={(e) => handleReaction(e, "thankful")}
+            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-amber-100"
+          >
+            🙏 {reactionCounts.thankful || 0}
+          </button>
+          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
+            opacity-0 group-hover:opacity-100 transition 
+            bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none">
+            I appreciate this
+          </div>
+        </div>
 
           <div className="ml-auto text-sm text-slate-500">
             💬 {post.commentCount || 0}

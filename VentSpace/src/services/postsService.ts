@@ -22,6 +22,8 @@ export async function getPosts(params?: {
       support: p.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
       thoughtful:
         p.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
+      thankful:
+        p.reactions?.filter((r: any) => r.kind === "thankful").length ?? 0,
     };
 
     return {
@@ -76,6 +78,8 @@ export async function getMyPosts(): Promise<Post[]> {
       support: p.reactions?.filter((r: any) => r.kind === "support").length ?? 0,
       thoughtful:
         p.reactions?.filter((r: any) => r.kind === "thoughtful").length ?? 0,
+      thankful:
+        p.reactions?.filter((r: any) => r.kind === "thankful").length ?? 0,
     };
 
     return {
@@ -93,7 +97,7 @@ export async function getMyPosts(): Promise<Post[]> {
 }
 
 export async function toggleReaction(params: {
-  kind: "heart" | "support" | "thoughtful";
+  kind: "heart" | "support" | "thoughtful" | "thankful";
   postId?: string;
   commentId?: string;
 }) {
