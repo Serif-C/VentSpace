@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import type { Post } from "../../types/post";
 import { toggleReaction } from "../../services/postsService";
+import { HeartHandshake, Users, Brain, HandHeart, MessageCircle } from "lucide-react";
 
 type Props = {
   post: Post;
@@ -78,7 +79,8 @@ export default function PostCard({ post, onTagClick }: Props) {
             onClick={(e) => handleReaction(e, "heart")}
             className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95"
           >
-            ❤️ {reactionCounts.heart || 0}
+            <HeartHandshake size={16} />
+            {reactionCounts.heart || 0}
           </button>
           <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
             opacity-0 group-hover:opacity-100 transition 
@@ -92,7 +94,8 @@ export default function PostCard({ post, onTagClick }: Props) {
             onClick={(e) => handleReaction(e, "support")}
             className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-indigo-100"
           >
-            🫂 {reactionCounts.support || 0}
+            <Users size={16} />
+            {reactionCounts.support || 0}
           </button>
           <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
             opacity-0 group-hover:opacity-100 transition 
@@ -106,7 +109,8 @@ export default function PostCard({ post, onTagClick }: Props) {
             onClick={(e) => handleReaction(e, "thoughtful")}
             className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-purple-100"
           >
-            💭 {reactionCounts.thoughtful || 0}
+            <Brain size={16} />
+            {reactionCounts.thoughtful || 0}
           </button>
           <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
             opacity-0 group-hover:opacity-100 transition 
@@ -120,7 +124,8 @@ export default function PostCard({ post, onTagClick }: Props) {
             onClick={(e) => handleReaction(e, "thankful")}
             className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-amber-100"
           >
-            🙏 {reactionCounts.thankful || 0}
+            <HandHeart size={16} />
+            {reactionCounts.thankful || 0}
           </button>
           <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
             opacity-0 group-hover:opacity-100 transition 
@@ -130,7 +135,8 @@ export default function PostCard({ post, onTagClick }: Props) {
         </div>
 
           <div className="ml-auto text-sm text-slate-500">
-            💬 {post.commentCount || 0}
+            <MessageCircle size={16} />
+            {post.commentCount || 0}
           </div>
 
         </div>

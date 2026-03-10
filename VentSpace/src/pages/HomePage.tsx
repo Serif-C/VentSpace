@@ -5,6 +5,7 @@ import PostCard from "../components/post/PostCard";
 import { useOutletContext } from "react-router-dom";
 import { getPosts } from "../services/postsService";
 import { useLocation } from "react-router-dom";
+import { Flame, MessageCircle, Newspaper } from "lucide-react";
 
 export default function HomePage() {
   const [sort, setSort] = useState<"new" | "trending" | "discussed">("new");
@@ -146,7 +147,7 @@ async function loadMore() {
             : "text-slate-500 hover:text-indigo-500"
         }`}
       >
-        🆕 New
+        New
       </button>
 
       <button
@@ -157,7 +158,7 @@ async function loadMore() {
             : "text-slate-500 hover:text-indigo-500"
         }`}
       >
-        🔥 Trending
+        Trending
       </button>
 
       <button
@@ -168,7 +169,7 @@ async function loadMore() {
             : "text-slate-500 hover:text-indigo-500"
         }`}
       >
-        💬 Discussed
+        Discussed
       </button>
     </div>
   </div>

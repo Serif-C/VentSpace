@@ -9,7 +9,8 @@ import NotificationBell from "./NotificationBell";
 import SupportChatWidget from "./SupportChatWidget";
 import ActiveDiscussions from "../../components/sidebar/ActiveDiscussions";
 import { useLocation } from "react-router-dom";
-import { Heart, Users, MessageCircle, HandHeart } from "lucide-react";
+import { Home, Newspaper, PenSquare } from "lucide-react";
+
 
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -48,6 +49,7 @@ export default function AppShell() {
   const [showAllTags, setShowAllTags] = useState(false);
 
   const location = useLocation();
+  const isHomePage = location.pathname === "/" || location.pathname === "/feed";
 
   function handleSearch(e: React.FormEvent) {
   e.preventDefault();
@@ -149,8 +151,6 @@ export default function AppShell() {
             ) : (
               <>
 
-              <NotificationBell />
-
               <NavLink
                 to="/settings"
                 className={({ isActive }) =>
@@ -161,6 +161,8 @@ export default function AppShell() {
               >
                 {user.nickname}
               </NavLink>
+
+              <NotificationBell />
 
                 <button
                   onClick={logout}
@@ -179,6 +181,7 @@ export default function AppShell() {
       <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-6">
 
        {/* LEFT SIDEBAR */}
+       {isHomePage && (
         <aside className="hidden lg:block col-span-2">
           <div className="space-y-4">
 
@@ -194,24 +197,27 @@ export default function AppShell() {
 
               <NavLink
                 to="/"
-                className="block text-sm text-slate-600 hover:text-indigo-500"
+                className="flex items-center gap-2 text-sm text-slate-600 hover:text-indigo-500"
               >
-                🏠 All Posts
+                <Home size={16} />
+                All Posts
               </NavLink>
 
               <NavLink
                 to="/feed"
-                className="block text-sm text-slate-600 hover:text-indigo-500"
+                className="flex items-center gap-2 text-sm text-slate-600 hover:text-indigo-500"
               >
-                📰 My Feed
+                <Newspaper size={16} />
+                My Feed
               </NavLink>
 
               {user && (
                 <NavLink
                   to="/new"
-                  className="block text-sm text-slate-600 hover:text-indigo-500"
+                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-indigo-500"
                 >
-                  ✏️ New Post
+                  <PenSquare size={16} />
+                  New Post
                 </NavLink>
               )}
             </div>
@@ -289,6 +295,7 @@ export default function AppShell() {
 
           </div>
         </aside>
+      )}
 
         {/* MAIN CONTENT */}
         <main className="col-span-12 lg:col-span-7">
@@ -296,10 +303,12 @@ export default function AppShell() {
         </main>
 
         {/* RIGHT SIDEBAR */}
-        <aside className="hidden lg:block col-span-3 space-y-4">
-          <RightSidebar posts={posts} />
-          <ActiveDiscussions />
-        </aside>
+        {isHomePage && (
+          <aside className="hidden lg:block col-span-3 space-y-4">
+            <RightSidebar posts={posts} />
+            <ActiveDiscussions />
+          </aside>
+        )}
 
       </div>
 

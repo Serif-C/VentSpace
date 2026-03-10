@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { getNotifications, markAllAsRead, type Notification } from "../../services/notificationsService";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import { Bell } from "lucide-react";
 
 export default function NotificationBell() {
   const { user } = useAuth();
@@ -96,7 +97,8 @@ export default function NotificationBell() {
           animate ? "animate-bounce" : ""
         }`}
       >
-        🔔
+        <Bell size={18} />
+        
         {unreadCount > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
             {unreadCount}
@@ -141,7 +143,8 @@ export default function NotificationBell() {
           className="fixed top-20 right-6 w-80 bg-white shadow-xl border border-stone-200 rounded-xl p-4 z-[9999] animate-slide-in"
         >
           <div className="text-sm font-medium">
-            🔔 {toast.message}
+            <Bell size={16} />
+            {toast.message}
           </div>
           <div className="text-xs text-slate-400 mt-1">
             {new Date(toast.createdAt).toLocaleString()}

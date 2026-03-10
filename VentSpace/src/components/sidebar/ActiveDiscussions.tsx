@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../../services/api";
+import { Flame, MessageCircle } from "lucide-react";
 
 type Discussion = {
   id: string;
@@ -33,7 +34,10 @@ export default function ActiveDiscussions() {
       border: "1px solid var(--border)"
     }}>
       <h3 className="text-sm font-semibold mb-3">
-        🔥 Active Discussions
+        <div className="flex items-center gap-2">
+          {/* <Flame size={16} /> */}
+          Active Discussions
+        </div>
       </h3>
 
       <div className="space-y-3">
@@ -47,8 +51,9 @@ export default function ActiveDiscussions() {
               {post.title}
             </div>
 
-            <div className="text-xs text-slate-500">
-              💬 {post._count.comments} replies
+            <div className="flex items-center gap-1 text-xs text-slate-500">
+              <MessageCircle size={14} />
+              {post._count.comments} replies
             </div>
           </Link>
         ))}

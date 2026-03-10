@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import CommentItem from "../components/post/CommentItem";
 import { useLocation } from "react-router-dom";
 import { toggleReaction } from "../services/postsService";
+import { HeartHandshake, Users, Brain, HandHeart } from "lucide-react";
 
 const API_URL = "http://localhost:4000";
 
@@ -309,17 +310,6 @@ const commentTree = buildCommentTree(post.comments || []);
             ))}
           </div>
 
-          {/* {isAuthor && (
-            <div className="flex gap-4 mb-4">
-              <button onClick={() => setEditing(true)} className="text-blue-600 text-xs">
-                Edit
-              </button>
-              <button onClick={handleDelete} className="text-red-600 text-xs">
-                Delete
-              </button>
-            </div>
-          )} */}
-
         <div className="flex gap-6 mb-6 text-sm">
 
           <button
@@ -330,7 +320,8 @@ const commentTree = buildCommentTree(post.comments || []);
                 : ""
             }`}
           >
-            ❤️ {reactionCounts.heart}
+            <HeartHandshake size={18} />
+            {reactionCounts.heart}
           </button>
 
           <button
@@ -341,7 +332,8 @@ const commentTree = buildCommentTree(post.comments || []);
                 : ""
             }`}
           >
-            🫂 {reactionCounts.support}
+            <Users size={18} />
+            {reactionCounts.support}
           </button>
 
           <button
@@ -352,7 +344,8 @@ const commentTree = buildCommentTree(post.comments || []);
                 : ""
             }`}
           >
-            💭 {reactionCounts.thoughtful}
+            <Brain size={18} />
+            {reactionCounts.thoughtful}
           </button>
           
           <button
@@ -363,7 +356,8 @@ const commentTree = buildCommentTree(post.comments || []);
                 : ""
             }`}
           >
-            🙏 {reactionCounts.thankful}
+            <HandHeart size={18} />
+            {reactionCounts.thankful}
           </button>
 
         </div>
