@@ -33,7 +33,8 @@ export default function ActiveDiscussions() {
       backgroundColor: "var(--card)",
       border: "1px solid var(--border)"
     }}>
-      <h3 className="text-sm font-semibold mb-3">
+      <h3 style={{ color: "var(--accent)" }}
+                className="text-xs font-semibold uppercase tracking-wide mb-3">
         <div className="flex items-center gap-2">
           {/* <Flame size={16} /> */}
           Active Discussions

@@ -48,9 +48,11 @@ export default function PostCard({ post, onTagClick }: Props) {
   return (
     <Link
       to={`/post/${post.id}`}
-      className="block bg-white rounded-xl border border-stone-200 p-5 
-                 shadow-md hover:shadow-xl hover:-translate-y-[2px]
-                 transition-all duration-200 cursor-pointer"
+      className="block rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-200"
+      style={{
+        backgroundColor: "var(--card)",
+        border: "1px solid var(--border)"
+      }}
     >
       <h2 className="text-lg font-semibold mb-2">{post.title}</h2>
 
@@ -64,7 +66,11 @@ export default function PostCard({ post, onTagClick }: Props) {
         {post.tags.map(tag => (
           <span
             key={tag}
-            className="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full"
+            style={{
+              backgroundColor: "var(--tag-bg)",
+              color: "var(--tag-text)"
+            }}
+            className="text-xs px-2 py-1 rounded-full"
           >
             #{tag}
           </span>
@@ -77,7 +83,10 @@ export default function PostCard({ post, onTagClick }: Props) {
         <div className="relative group">
           <button
             onClick={(e) => handleReaction(e, "heart")}
-            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95"
+            style={{ backgroundColor: "var(--reaction-bg)" 
+                
+            }}
+            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full active:scale-95  hover:bg-indigo-100"
           >
             <HeartHandshake size={16} />
             {reactionCounts.heart || 0}
@@ -92,6 +101,7 @@ export default function PostCard({ post, onTagClick }: Props) {
         <div className="relative group">
           <button
             onClick={(e) => handleReaction(e, "support")}
+            style={{ backgroundColor: "var(--reaction-bg)" }}
             className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-indigo-100"
           >
             <Users size={16} />
@@ -107,6 +117,7 @@ export default function PostCard({ post, onTagClick }: Props) {
         <div className="relative group">
           <button
             onClick={(e) => handleReaction(e, "thoughtful")}
+            style={{ backgroundColor: "var(--reaction-bg)" }}
             className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-purple-100"
           >
             <Brain size={16} />
@@ -122,6 +133,7 @@ export default function PostCard({ post, onTagClick }: Props) {
         <div className="relative group">
           <button
             onClick={(e) => handleReaction(e, "thankful")}
+            style={{ backgroundColor: "var(--reaction-bg)" }}
             className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-stone-100 hover:bg-amber-100"
           >
             <HandHeart size={16} />

@@ -124,20 +124,24 @@ async function loadMore() {
   <div className="space-y-8">
 
     {/* Page Header */}
-    <div className="bg-white border border-stone-200 rounded-xl shadow-sm">
+    <div  className="rounded-xl shadow-sm p-6"
+      style={{
+        backgroundColor: "var(--card)", 
+        border: "1px solid var(--border)"
+      }}>
   
   <div className="p-6">
-    <h1 className="text-2xl font-semibold text-slate-800">
+    <h1 className="text-2xl font-semibold text-[var(--text)]">
       Welcome to VentSpace
     </h1>
 
-    <p className="text-sm text-slate-500 mt-1">
+    <p className="text-sm text-[var(--muted)] mt-1">  
       A safe anonymous space to vent and reflect.
     </p>
   </div>
 
   {/* Sticky Tabs */}
-  <div className="sticky top-[73px] bg-white border-t border-stone-200 z-20">
+  <div className="sticky top-[73px]">
     <div className="flex gap-8 px-6 py-4 text-sm font-medium">
       <button
         onClick={() => setSort("new")}

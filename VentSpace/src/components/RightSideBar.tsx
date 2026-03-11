@@ -38,7 +38,8 @@ export default function RightSidebar({ posts }: Props) {
         backgroundColor: "var(--card)",
         border: "1px solid var(--border)"
       }}>
-        <h3 className="text-sm font-semibold text-slate-600">
+        <h3 style={{ color: "var(--accent)" }}
+                className="text-xs font-semibold uppercase tracking-wide">
           Today’s Reminder
         </h3>
 
@@ -53,7 +54,8 @@ export default function RightSidebar({ posts }: Props) {
         backgroundColor: "var(--card)",
         border: "1px solid var(--border)"
       }}>
-        <h3 className="text-sm font-semibold text-slate-600">
+        <h3 style={{ color: "var(--accent)" }}
+                className="text-xs font-semibold uppercase tracking-wide">
           Recently Viewed
         </h3>
 

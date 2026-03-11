@@ -3,16 +3,26 @@
   --card: #ffffff;
   --border: #e7e5e4;
   --text: #1f2937;
+  --muted: #5d5c8d;
   --accent: #6366f1;
+  --tag-bg: #e1daee;
+  --browse-tag-hover-bg: #662bd3;
+  --trending-tag-hover-bg: #bdbcf0;
+  --tag-text: #434791;
+  --reaction-bg: #f0f0f0;
 }
 
 /* Dark theme */
 [data-theme="dark"] {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --border: #334155;
-  --text: #e2e8f0;
-  --accent: #818cf8;
+  --bg: #0b1324;
+  --card: #111c34;
+  --border: #1f2a44;
+  --text: #e6edf6;
+  --muted: #94a3b8;
+  --accent: #7c8cff;
+  --tag-bg: #1f2a44;
+  --tag-text: #c7d2fe;
+  --tag-bg: #1f2a44;
 }
 
 /* Ocean theme */

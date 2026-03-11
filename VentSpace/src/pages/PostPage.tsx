@@ -304,7 +304,12 @@ const commentTree = buildCommentTree(post.comments || []);
 
           <div className="mb-4 flex gap-2">
             {post.tags.map((tag: string) => (
-              <span key={tag} className="text-xs bg-gray-100 px-2 py-1 rounded">
+              <span key={tag} 
+              style={{
+                      backgroundColor: "var(--tag-bg)",
+                      color: "var(--tag-text)"
+                    }}
+              className="text-xs px-2 py-1 rounded">
                 #{tag}
               </span>
             ))}

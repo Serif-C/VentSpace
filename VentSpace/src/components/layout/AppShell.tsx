@@ -64,7 +64,11 @@ export default function AppShell() {
     }}>
 
       {/* Top Navbar */}
-      <header className="bg-white border-b backdrop-blur bg-white/60 sticky top-0 z-30">
+      <header className="border-b backdrop-blur sticky top-0 z-30"
+        style={{
+          backgroundColor: "var(--card)",
+          borderColor: "var(--border)"
+        }}>
         <div className="max-w-7xl mx-auto flex items-center px-6 py-4">
 
            {/* LEFT LOGO */}
@@ -76,7 +80,7 @@ export default function AppShell() {
                 window.location.reload();
               }
             }}
-            className="text-2xl font-semibold text-indigo-500"
+            className="text-2xl font-semibold text-indigo-500  hover:text-indigo-600 transition"
           >
             VentSpace
           </Link>
@@ -105,7 +109,7 @@ export default function AppShell() {
               className={({ isActive }) =>
                 isActive
                   ? "text-indigo-500"
-                  : "text-slate-600 hover:text-indigo-500 transition"
+                  : "text-slate-600 hover:text-indigo-500 transition text-[var(--muted)] hover:text-[var(--accent)]"
               }
             >
               My Feed
@@ -117,7 +121,7 @@ export default function AppShell() {
                 className={({ isActive }) =>
                   isActive
                     ? "text-indigo-500"
-                    : "text-slate-600 hover:text-indigo-500 transition"
+                    : "text-slate-600 hover:text-indigo-500 transition text-[var(--muted)] hover:text-[var(--accent)]"
                 }
               >
                 New Post
@@ -131,7 +135,7 @@ export default function AppShell() {
                   className={({ isActive }) =>
                     isActive
                       ? "text-indigo-500"
-                      : "text-slate-600 hover:text-indigo-500 transition"
+                      : "text-slate-600 hover:text-indigo-500 transition text-[var(--muted)] hover:text-[var(--accent)]"
                   }
                 >
                   Login
@@ -142,7 +146,7 @@ export default function AppShell() {
                   className={({ isActive }) =>
                     isActive
                       ? "text-indigo-500"
-                      : "text-slate-600 hover:text-indigo-500 transition"
+                      : "text-slate-600 hover:text-indigo-500 transition text-[var(--muted)] hover:text-[var(--accent)]"
                   }
                 >
                   Sign Up
@@ -156,7 +160,7 @@ export default function AppShell() {
                 className={({ isActive }) =>
                   isActive
                     ? "text-indigo-500"
-                    : "text-slate-600 hover:text-indigo-500 transition"
+                    : "text-slate-600 hover:text-indigo-500 transition text-[var(--muted)] hover:text-[var(--accent)]"
                 }
               >
                 {user.nickname}
@@ -191,7 +195,8 @@ export default function AppShell() {
               backgroundColor: "var(--card)",
               border: "1px solid var(--border)"
             }}>
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              <h3 style={{ color: "var(--accent)" }}
+                className="text-xs font-semibold uppercase tracking-wide">
                 Explore
               </h3>
 
@@ -228,7 +233,8 @@ export default function AppShell() {
               backgroundColor: "var(--card)",
               border: "1px solid var(--border)"
             }}>
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              <h3 style={{ color: "var(--accent)" }}
+                className="text-xs font-semibold uppercase tracking-wide">
                 Trending Tags
               </h3>
 
@@ -236,7 +242,7 @@ export default function AppShell() {
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
-                  className="flex justify-between w-full text-sm px-3 py-1 rounded-md hover:bg-stone-100"
+                  className="flex justify-between w-full text-sm px-3 py-1 rounded-md hover:bg-[var(--trending-tag-hover-bg)] hover:text-[var(--tag-text)] transition"
                 >
                   <span className="text-slate-600">#{tag}</span>
                   <span className="text-xs text-slate-400">
@@ -252,7 +258,8 @@ export default function AppShell() {
               backgroundColor: "var(--card)",
               border: "1px solid var(--border)"
             }}>
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              <h3 style={{ color: "var(--accent)" }}
+                className="text-xs font-semibold uppercase tracking-wide">
                 Browse Tags
               </h3>
               <div className="text-xs text-slate-400 mb-2"></div>
@@ -260,7 +267,7 @@ export default function AppShell() {
               <input
                 type="text"
                 placeholder="Search tags..."
-                className="w-full px-3 py-1 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full px-3 py-1 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 "
                 onChange={(e) => {
                   const value = e.target.value.toLowerCase();
                   if (!value) return;
@@ -276,7 +283,11 @@ export default function AppShell() {
                   <button
                     key={tag}
                     onClick={() => setSelectedTag(tag)}
-                    className="text-xs px-2 py-1 bg-stone-100 rounded-full hover:bg-indigo-100 hover:text-indigo-600"
+                    style={{
+                      backgroundColor: "var(--tag-bg)",
+                      color: "var(--tag-text)",
+                    }}
+                    className="text-xs px-2 py-1  rounded-full hover:-[var(--browse-tag-hover-bg)] hover:text-indigo-600"
                   >
                     #{tag}
                   </button>
@@ -315,7 +326,7 @@ export default function AppShell() {
         {/* Support Chat Widget */}
         <SupportChatWidget />
         
-      <footer className="text-center text-xs text-slate-400 py-6">
+      <footer className="text-center text-xs text-[var(--muted)] py-6">
         VentSpace — a safe place to reflect and breathe
       </footer>
 
