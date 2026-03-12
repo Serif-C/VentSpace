@@ -11,7 +11,7 @@ import ActiveDiscussions from "../../components/sidebar/ActiveDiscussions";
 import { useLocation } from "react-router-dom";
 import { Home, Newspaper, PenSquare } from "lucide-react";
 
-
+// commit
 export default function AppShell() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [posts, setPosts] = useState<any[]>([]);
@@ -95,6 +95,10 @@ export default function AppShell() {
               placeholder="Search by tag or title..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              style={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border)"
+              }}
               className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </form>
@@ -268,6 +272,10 @@ export default function AppShell() {
                 type="text"
                 placeholder="Search tags..."
                 className="w-full px-3 py-1 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 "
+                style={{
+                  backgroundColor: "var(--card)",
+                  borderColor: "var(--border)"
+                }}
                 onChange={(e) => {
                   const value = e.target.value.toLowerCase();
                   if (!value) return;

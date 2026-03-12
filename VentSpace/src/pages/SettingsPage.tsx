@@ -63,22 +63,31 @@ export default function SettingsPage() {
   if (!settings) return <div className="p-6">Failed to load settings.</div>;
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-8">
+    <div className="max-w-2xl mx-auto p-6 space-y-8" >
 
       <h1 className="text-2xl font-semibold">Settings</h1>
 
       {/* Profile Section */}
-      <div className="bg-white shadow-sm border border-stone-200 rounded-xl p-6 space-y-4">
-        <h2 className="font-semibold text-lg">Profile</h2>
+      <div className=" rounded-xl p-6 space-y-4"
+      style={{
+        backgroundColor: "var(--card)",
+        border: "1px solid var(--border)"
+      }}>
+        <h2 className="font-semibold text-lg" >Profile</h2>
 
         <div>
-          <label className="block text-sm mb-1">Nickname</label>
+          <label className="block text-sm mb-1"
+          >Nickname</label>
           <input
             value={settings.nickname}
             onChange={e =>
               setSettings({ ...settings, nickname: e.target.value })
             }
             className="w-full border rounded-lg px-3 py-2"
+            style={{
+              backgroundColor: "var(--card)",
+              borderColor: "var(--border)"
+            }}
           />
         </div>
 
@@ -90,6 +99,10 @@ export default function SettingsPage() {
               setSettings({ ...settings, avatarUrl: e.target.value })
             }
             className="w-full border rounded-lg px-3 py-2"
+            style={{
+              backgroundColor: "var(--card)",
+              borderColor: "var(--border)"
+            }}
           />
         </div>
 
@@ -106,6 +119,10 @@ export default function SettingsPage() {
               localStorage.setItem("theme", value);
             }}
             className="w-full border rounded-lg px-3 py-2"
+            style={{
+              backgroundColor: "var(--card)",
+              borderColor: "var(--border)"
+            }}
           >
             <option value="default">Calm (Default)</option>
             <option value="dark">Dark</option>
@@ -116,7 +133,11 @@ export default function SettingsPage() {
       </div>
 
       {/* Security Section */}
-      <div className="bg-white shadow-sm border border-stone-200 rounded-xl p-6 space-y-4">
+      <div className="rounded-xl p-6 space-y-4"
+      style={{
+        backgroundColor: "var(--card)",
+        border: "1px solid var(--border)"
+      }}>
         <h2 className="font-semibold text-lg">Security</h2>
 
         <div>
@@ -127,12 +148,20 @@ export default function SettingsPage() {
             onChange={e => setPassword(e.target.value)}
             placeholder="Leave blank to keep current password"
             className="w-full border rounded-lg px-3 py-2"
+            style={{
+              backgroundColor: "var(--card)",
+              borderColor: "var(--border)"
+            }}
           />
         </div>
       </div>
 
       {/* Notifications Section */}
-      <div className="bg-white shadow-sm border border-stone-200 rounded-xl p-6 space-y-4">
+      <div className="rounded-xl p-6 space-y-4"
+      style={{
+        backgroundColor: "var(--card)",
+        border: "1px solid var(--border)"
+      }}>
         <h2 className="font-semibold text-lg">Notifications</h2>
 
         <label className="flex items-center gap-3 text-sm">

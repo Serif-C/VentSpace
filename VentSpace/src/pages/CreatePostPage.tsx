@@ -47,6 +47,10 @@ export default function CreatePostPage() {
         placeholder="Give your post a title..."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        style={{
+          backgroundColor: "var(--card)",
+          borderColor: "var(--border)"
+        }}
         className="w-full border rounded p-2 mb-3"
       />
 
