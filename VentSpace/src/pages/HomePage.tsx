@@ -5,13 +5,15 @@ import PostCard from "../components/post/PostCard";
 import { useOutletContext } from "react-router-dom";
 import { getPosts } from "../services/postsService";
 import { useLocation } from "react-router-dom";
-import { Flame, MessageCircle, Newspaper } from "lucide-react";
+import { Flame, MessageCircle, Newspaper, Leaf } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const [sort, setSort] = useState<"new" | "trending" | "discussed">("new");
   // const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const { selectedTag } = useOutletContext<{ selectedTag: string | null }>();
   const location = useLocation();
+  const navigate = useNavigate();
   
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -123,60 +125,73 @@ async function loadMore() {
   return (
   <div className="space-y-8">
 
-    {/* Page Header */}
-    <div  className="rounded-xl shadow-sm p-6"
-      style={{
-        backgroundColor: "var(--card)", 
-        border: "1px solid var(--border)"
-      }}>
-  
-  <div className="p-6">
-    <h1 className="text-2xl font-semibold text-[var(--text)]">
-      Welcome to VentSpace
-    </h1>
+  {/* Page Header */}
+  <div
+    className="rounded-2xl shadow-sm overflow-hidden"
+    style={{
+      backgroundColor: "var(--card)",
+      border: "1px solid var(--border)",
+    }}
+  >
+    <div className="p-6">
 
-    <p className="text-sm text-[var(--muted)] mt-1">  
-      A safe anonymous space to vent and reflect.
-    </p>
-  </div>
+      <h1 className="text-xl font-semibold text-[var(--text)] flex items-center gap-2">
+        <Leaf size={16} /> How are you feeling today? <Leaf size={16} />
+      </h1>
 
-  {/* Sticky Tabs */}
-  <div className="sticky top-[73px]">
-    <div className="flex gap-8 px-6 py-4 text-sm font-medium">
-      <button
-        onClick={() => setSort("new")}
-        className={`transition ${
-          sort === "new"
-            ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
-            : "text-slate-500 hover:text-indigo-500"
-        }`}
-      >
-        New
-      </button>
+      <p className="text-sm text-[var(--muted)] mt-2 max-w-lg">
+        Share what's on your mind anonymously. Your thoughts matter here.
+      </p>
 
       <button
-        onClick={() => setSort("trending")}
-        className={`transition ${
-          sort === "trending"
-            ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
-            : "text-slate-500 hover:text-indigo-500"
-        }`}
+        onClick={() => navigate("/new")}
+        className="mt-4 px-4 py-2 rounded-lg bg-indigo-500 text-white text-sm font-medium
+                  hover:bg-indigo-600 transition shadow-sm"
       >
-        Trending
+        Start Venting
       </button>
 
-      <button
-        onClick={() => setSort("discussed")}
-        className={`transition ${
-          sort === "discussed"
-            ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
-            : "text-slate-500 hover:text-indigo-500"
-        }`}
-      >
-        Discussed
-      </button>
     </div>
-  </div>
+
+    {/* Tabs */}
+    <div className="sticky top-[73px] border-t"
+      style={{ borderColor: "var(--border)" }}
+    >
+      <div className="flex gap-8 px-6 py-4 text-sm font-medium">
+        <button
+          onClick={() => setSort("new")}
+          className={`transition ${
+            sort === "new"
+              ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
+              : "text-slate-500 hover:text-indigo-500"
+          }`}
+        >
+          New
+        </button>
+
+        <button
+          onClick={() => setSort("trending")}
+          className={`transition ${
+            sort === "trending"
+              ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
+              : "text-slate-500 hover:text-indigo-500"
+          }`}
+        >
+          Trending
+        </button>
+
+        <button
+          onClick={() => setSort("discussed")}
+          className={`transition ${
+            sort === "discussed"
+              ? "text-indigo-600 border-b-2 border-indigo-600 pb-2"
+              : "text-slate-500 hover:text-indigo-500"
+          }`}
+        >
+          Discussed
+        </button>
+      </div>
+    </div>
 </div>
 
     {/* Posts */}

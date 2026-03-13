@@ -260,7 +260,7 @@ const commentTree = buildCommentTree(post.comments || []);
 
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-3xl mx-auto px-4">
 
       {editing ? (
         <>
@@ -296,9 +296,20 @@ const commentTree = buildCommentTree(post.comments || []);
         </>
       ) : (
         <>
-          <h1 className="text-2xl font-semibold mb-3">
+        <div
+          className="rounded-2xl shadow-sm p-6"
+          style={{
+            backgroundColor: "var(--card)",
+            border: "1px solid var(--border)"
+          }}
+        >
+          <h1 className="text-2xl font-semibold text-[var(--text)]">
             {post.title}
           </h1>
+
+          <p className="text-xs text-[var(--muted)] mb-4">
+            Posted anonymously • {new Date(post.createdAt).toLocaleDateString()}
+          </p>
 
           <p className="mb-4 whitespace-pre-wrap">{post.content}</p>
 
@@ -315,60 +326,46 @@ const commentTree = buildCommentTree(post.comments || []);
             ))}
           </div>
 
-        <div className="flex gap-6 mb-6 text-sm">
+          <div className="flex gap-6 text-sm">
 
-          <button
-            onClick={() => reactToPost("heart")}
-            className={`transition hover:scale-110 ${
-              activeReactions.includes("heart")
-                ? "text-red-500 font-semibold"
-                : ""
-            }`}
-          >
-            <HeartHandshake size={18} />
-            {reactionCounts.heart}
-          </button>
+            <button
+              onClick={() => reactToPost("heart")}
+              // style={{ backgroundColor: "var(--reaction-bg)"}}
+              className="flex items-center gap-1 text-sm px-3 py-1 rounded-full active:scale-95  hover:bg-indigo-100"
+            >
+              <HeartHandshake size={18} />
+              {reactionCounts.heart}
+            </button>
 
-          <button
-            onClick={() => reactToPost("support")}
-            className={`transition hover:scale-110 ${
-              activeReactions.includes("support")
-                ? "text-green-600 font-semibold"
-                : ""
-            }`}
-          >
-            <Users size={18} />
-            {reactionCounts.support}
-          </button>
+            <button
+              onClick={() => reactToPost("support")}
+              className="flex items-center gap-1 text-sm px-3 py-1 rounded-full active:scale-95  hover:bg-indigo-100"
+            >
+              <Users size={18} />
+              {reactionCounts.support}
+            </button>
 
-          <button
-            onClick={() => reactToPost("thoughtful")}
-            className={`transition hover:scale-110 ${
-              activeReactions.includes("thoughtful")
-                ? "text-indigo-600 font-semibold"
-                : ""
-            }`}
-          >
-            <Brain size={18} />
-            {reactionCounts.thoughtful}
-          </button>
-          
-          <button
-            onClick={() => reactToPost("thankful")}
-            className={`transition hover:scale-110 ${
-              activeReactions.includes("thankful")
-                ? "text-green-600 font-semibold"
-                : ""
-            }`}
-          >
-            <HandHeart size={18} />
-            {reactionCounts.thankful}
-          </button>
-
+            <button
+              onClick={() => reactToPost("thoughtful")}
+              className="flex items-center gap-1 text-sm px-3 py-1 rounded-full active:scale-95  hover:bg-indigo-100"
+            >
+              <Brain size={18} />
+              {reactionCounts.thoughtful}
+            </button>
+            
+            <button
+              onClick={() => reactToPost("thankful")}
+              className="flex items-center gap-1 text-sm px-3 py-1 rounded-full active:scale-95  hover:bg-indigo-100"
+            >
+              <HandHeart size={18} />
+              {reactionCounts.thankful}
+            </button>
+          </div>
         </div>
         
+        
 
-          <h2 className="font-semibold mb-2">
+          <h2 className="font-semibold mb-2 mt-2 text-[var(--text)]">
             Comments ({post.comments?.length ?? 0})
           </h2>
 
