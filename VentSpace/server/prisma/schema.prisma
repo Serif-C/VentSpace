@@ -29,6 +29,10 @@ model User {
   comments     Comment[]
   reactions    Reaction[]
   notifications Notification[] @relation("notificationsForUser")
+
+  emailVerified Boolean @default(false)
+  verificationToken String? @unique
+  verificationTokenExpiry DateTime?
 }
 
 model Post {

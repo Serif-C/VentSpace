@@ -49,7 +49,9 @@ export default function AppShell() {
   const [showAllTags, setShowAllTags] = useState(false);
 
   const location = useLocation();
-  const isHomePage = location.pathname === "/" || location.pathname === "/feed";
+  const isHomePage = location.pathname === "/" || location.pathname === "/feed" || location.pathname === "/new" || location.pathname.startsWith("/post/");
+  const isSettingsPage = location.pathname === "/settings";
+  const isPostPage = location.pathname.startsWith("/post/");
 
   function handleSearch(e: React.FormEvent) {
   e.preventDefault();
@@ -186,7 +188,12 @@ export default function AppShell() {
       </header>
 
       {/* 3 Column Layout */}
-      <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-6">
+      {/* <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-6"> */}
+      <div
+        className={`max-w-7xl mx-auto px-6 py-8 ${
+          isHomePage || isSettingsPage ? "grid grid-cols-12 gap-6" : "flex justify-center"
+        }`}
+      >
 
        {/* LEFT SIDEBAR */}
        {isHomePage && (
