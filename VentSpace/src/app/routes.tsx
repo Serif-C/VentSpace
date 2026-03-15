@@ -8,6 +8,7 @@ import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import SettingsPage from "../pages/SettingsPage";
 import ProtectedRoute from "../components/ProtectedRoute";
+import VerifyEmailPage from "../pages/VerifyEmailPage";
 
 export const router = createBrowserRouter([
   {
@@ -42,4 +43,5 @@ export const router = createBrowserRouter([
   // Auth pages OUTSIDE layout
   { path: "/login", element: <LoginPage /> },
   { path: "/signup", element: <SignupPage /> },
+  { path: "/verify-email", element: <VerifyEmailPage /> },
 ]);

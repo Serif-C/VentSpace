@@ -25,7 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Load from localStorage on refresh
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
     const storedToken = localStorage.getItem("token");
 
     if (storedUser && storedToken) {

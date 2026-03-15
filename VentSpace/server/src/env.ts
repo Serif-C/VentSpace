@@ -7,4 +7,7 @@ export const env = {
   DATABASE_URL: process.env.DATABASE_URL || "file:./dev.db",
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:5173",
   OPENAI_API_KEY: process.env.OPENAI_API_KEY || "",
+  
+  RESEND_API_KEY: process.env.RESEND_API_KEY || "",
+  APP_URL: process.env.APP_URL || "http://localhost:5173",
 };
