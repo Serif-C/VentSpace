@@ -197,23 +197,23 @@ export default function PostPage() {
     }
   }
 
-  async function reactToComment(kind: string, commentId: string) {
-    if (!token) return;
+  // async function reactToComment(kind: string, commentId: string) {
+  //   if (!token) return;
 
-    await fetch(`${API_URL}/reactions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        kind,
-        commentId,
-      }),
-    });
+  //   await fetch(`${API_URL}/reactions`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     body: JSON.stringify({
+  //       kind,
+  //       commentId,
+  //     }),
+  //   });
 
-    fetchPost();
-  }
+  //   fetchPost();
+  // }
 
   if (loading) return <p>Loading...</p>;
   if (!post) return <p>Post not found</p>;

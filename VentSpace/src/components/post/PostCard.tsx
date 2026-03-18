@@ -9,7 +9,7 @@ type Props = {
   onTagClick?: (tag: string) => void;
 };
 
-export default function PostCard({ post, onTagClick }: Props) {
+export default function PostCard({ post }: Props) {
   const [reactionCounts, setReactionCounts] = useState(post.reactions);
   const [activeReactions, setActiveReactions] = useState<string[]>(
     post.viewerReactions ?? []

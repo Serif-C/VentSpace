@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "../services/postsService";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 
 const prompts = [
   "What has been weighing on your mind lately?",
@@ -17,7 +17,7 @@ export default function CreatePostPage() {
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const navigate = useNavigate();
-  const { token } = useAuth();
+  // const { token } = useAuth();
 
   const prompt = prompts[new Date().getDate() % prompts.length];
 

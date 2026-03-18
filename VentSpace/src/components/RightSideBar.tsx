@@ -11,7 +11,7 @@ type Props = {
   posts: Post[];
 };
 
-export default function RightSidebar({ posts }: Props) {
+export default function RightSidebar({ }: Props) {
 
   const reminders = [
     "You are allowed to take space.",

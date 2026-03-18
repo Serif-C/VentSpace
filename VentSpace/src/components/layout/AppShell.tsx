@@ -51,7 +51,6 @@ export default function AppShell() {
   const location = useLocation();
   const isHomePage = location.pathname === "/" || location.pathname === "/feed" || location.pathname === "/new" || location.pathname.startsWith("/post/");
   const isSettingsPage = location.pathname === "/settings";
-  const isPostPage = location.pathname.startsWith("/post/");
 
   function handleSearch(e: React.FormEvent) {
   e.preventDefault();

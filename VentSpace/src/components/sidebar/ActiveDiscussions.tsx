@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../../services/api";
-import { Flame, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 type Discussion = {
   id: string;

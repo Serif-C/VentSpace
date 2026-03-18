@@ -5,7 +5,7 @@ import PostCard from "../components/post/PostCard";
 import { useOutletContext } from "react-router-dom";
 import { getPosts } from "../services/postsService";
 import { useLocation } from "react-router-dom";
-import { Flame, MessageCircle, Newspaper, Leaf } from "lucide-react";
+import { Leaf } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {

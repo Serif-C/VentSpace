@@ -5,7 +5,6 @@ import SignupPage from "./pages/SignupPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HomePage from "./pages/HomePage";
 import SettingsPage from "./pages/SettingsPage";
-import FeedPage from "./pages/FeedPage"; // if you have one
 import PostPage from "./pages/PostPage";
 
 function App() {

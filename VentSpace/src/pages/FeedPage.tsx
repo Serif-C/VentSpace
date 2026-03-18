@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { getMyPosts, getPosts } from "../services/postsService";
+import { getMyPosts } from "../services/postsService";
 import PostCard from "../components/post/PostCard";
 import type { Post } from "../types/post";
 import { useAuth } from "../context/AuthContext";
