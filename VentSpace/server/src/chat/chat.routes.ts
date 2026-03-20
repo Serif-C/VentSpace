@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { z } from "zod";
 import OpenAI from "openai";
-import { env } from "../env";
+import { env } from "../env.js";
 
 const router = Router();
 

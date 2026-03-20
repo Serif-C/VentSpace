@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { prisma } from "../prisma";
-import { env } from "../env";
+import { prisma } from "../prisma.js";
+import { env } from "../env.js";
 import crypto from "crypto";
-import { sendVerificationEmail } from "../utils/sendEmail";
+import { sendVerificationEmail } from "../utils/sendEmail.js";
 
 export async function signup(email: string, password: string, nickname?: string) {
   const existing = await prisma.user.findUnique({ where: { email } });

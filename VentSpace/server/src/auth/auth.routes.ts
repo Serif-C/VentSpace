@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { z } from "zod";
-import { signup, signin } from "./auth.service";
-import { requireAuth, type AuthedRequest } from "./auth.middleware";
-import { prisma } from "../prisma";
+import { signup, signin } from "./auth.service.js";
+import { requireAuth, type AuthedRequest } from "./auth.middleware.js";
+import { prisma } from "../prisma.js";
 import crypto from "crypto";
-import { sendVerificationEmail } from "../utils/sendEmail";
+import { sendVerificationEmail } from "../utils/sendEmail.js";
 
 const router = Router();
 

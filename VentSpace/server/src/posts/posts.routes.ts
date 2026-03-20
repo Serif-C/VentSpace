@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { z } from "zod";
-import { prisma } from "../prisma";
+import { prisma } from "../prisma.js";
 import {
   requireAuth,
   optionalAuth,
   type AuthedRequest,
-} from "../auth/auth.middleware";
-import { generateEmotionTags } from "../ai/tagGenerator";
+} from "../auth/auth.middleware.js";
+import { generateEmotionTags } from "../ai/tagGenerator.js";
 
 const router = Router();
 
