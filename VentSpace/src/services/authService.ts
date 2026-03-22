@@ -1,6 +1,6 @@
 import type { AuthResponse } from "../types/auth";
 
-const API = "http://localhost:4000";
+const API = "https://ventspace-production.up.railway.app";
 
 export async function signup(
   email: string,

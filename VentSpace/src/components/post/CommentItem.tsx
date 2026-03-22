@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 
-const API_URL = "http://localhost:4000";
+const API_URL = "https://ventspace-production.up.railway.app";
 const MAX_VISUAL_DEPTH = 6;
 
 type Props = {

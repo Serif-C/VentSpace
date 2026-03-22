@@ -5,7 +5,7 @@ export async function streamChatMessage(
   history: any[],
   onToken: (token: string) => void
 ) {
-  const res = await fetch("http://localhost:4000/chat", {
+  const res = await fetch("https://ventspace-production.up.railway.app/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

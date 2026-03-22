@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { toggleReaction } from "../services/postsService";
 import { HeartHandshake, Users, Brain, HandHeart } from "lucide-react";
 
-const API_URL = "http://localhost:4000";
+const API_URL = "https://ventspace-production.up.railway.app";
 
 export default function PostPage() {
   const { id } = useParams();
