@@ -25,12 +25,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Load from localStorage on refresh
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-    const storedToken = localStorage.getItem("token");
+    try {
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
 
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-      setToken(storedToken);
+      if (!storedUser || !storedToken) return;
+
+      const parsedUser = JSON.parse(storedUser);
+
+      if (parsedUser && typeof parsedUser === "object") {
+        setUser(parsedUser);
+        setToken(storedToken);
+      } else {
+        throw new Error("Invalid user data");
+      }
+    } catch (error) {
+      console.error("Auth load error:", error);
+      localStorage.clear(); // 🔥 optional: reset bad state
     }
   }, []);
 
