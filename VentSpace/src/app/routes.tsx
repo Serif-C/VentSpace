@@ -9,6 +9,7 @@ import SignupPage from "../pages/SignupPage";
 import SettingsPage from "../pages/SettingsPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
+import MinimalLayout from "../components/layout/MinimalLayout";
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +42,12 @@ export const router = createBrowserRouter([
   },
 
   // Auth pages OUTSIDE layout
-  { path: "/login", element: <LoginPage /> },
-  { path: "/signup", element: <SignupPage /> },
-  { path: "/verify-email", element: <VerifyEmailPage /> },
+  {
+    element: <MinimalLayout />,
+    children: [
+      { path: "/login", element: <LoginPage /> },
+      { path: "/signup", element: <SignupPage /> },
+      { path: "/verify-email", element: <VerifyEmailPage /> },
+    ],
+  },
 ]);
