@@ -218,6 +218,7 @@ export default function AppShell() {
                 All Posts
               </NavLink>
 
+            {user && (
               <NavLink
                 to="/feed"
                 className="flex items-center gap-2 text-sm text-slate-600 hover:text-indigo-500"
@@ -225,6 +226,7 @@ export default function AppShell() {
                 <Newspaper size={16} />
                 My Feed
               </NavLink>
+            )}
 
               {user && (
                 <NavLink
